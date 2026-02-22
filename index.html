@@ -692,8 +692,8 @@ footer {
     <div class="step" data-state="overview">
       <div class="step-intro">
         <div class="ch">01 - Conversion</div>
-        <strong>70% above target (1.7K vs. 1K) - but the pipeline still has its challenges.</strong>
-        <p>The conversion funnel reveals where the real opportunities are.</p>
+        <strong>1.7K users onboarded - 70% above target. But 75K are eligible.</strong>
+        <p>Where are we losing the other 73K? Four drops in the funnel tell the story.</p>
       </div>
     </div>
 
@@ -1182,12 +1182,7 @@ function setFunnelState(state) {
     g.querySelector('.wf-gap-pct').style.color = 'var(--ink3)';
   });
 
-  if (state === 'overview') {
-    wfRows[0].style.opacity = '1';
-    wfRows[0].querySelector('.wf-bar').style.width = wfRows[0].dataset.w + '%';
-    wfRows[0].querySelector('.wf-bar').style.background = '#c8c6c0';
-    return;
-  }
+  if (state === 'overview') return;
 
   if (state.startsWith('lever')) {
     const n = parseInt(state[5]);
