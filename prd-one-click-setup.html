@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One-Click Onboarding — PRD v4.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink2: #555;
+    --ink3: #888;
+    --ink4: #bbb;
+    --rule: #e5e3de;
+    --bg: #f8f7f4;
+    --card-bg: #ffffff;
+    --card-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    --green: #059669;
+    --red: #dc2626;
+    --blue: #116DFF;
+    --orange: #ea580c;
+    --purple: #7c3aed;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink2);
+    line-height: 1.6;
+    background: var(--bg);
+    padding: 24px 32px 48px;
+    font-size: 15px;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    transition: opacity 0.2s;
+  }
+  .back-link:hover { opacity: 0.8; }
+
+  .container { max-width: 900px; margin: 0 auto; }
+
+  /* Hero */
+  .hero {
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    border-radius: 12px;
+    padding: 40px 48px;
+    margin-bottom: 24px;
+  }
+  .hero .badge {
+    display: inline-block;
+    background: var(--ink);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 1000px;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .hero .subtitle {
+    font-size: 16px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* Meta bar */
+  .meta-bar {
+    display: flex;
+    gap: 32px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .meta-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink3);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+  .meta-value { color: var(--ink2); font-weight: 500; }
+
+  /* Sections */
+  section { margin-bottom: 48px; }
+  .section-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink3);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--blue);
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+  p { margin-bottom: 12px; }
+  ul, ol { padding-left: 24px; margin-bottom: 16px; }
+  li { margin-bottom: 6px; }
+
+  /* Cards */
+  .card {
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 16px 0;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 14px;
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--rule); }
+  th {
+    background: var(--bg);
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(0,0,0,0.02); }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .tag-fe { background: rgba(17, 109, 255, 0.15); color: var(--blue); }
+  .tag-be { background: rgba(124, 58, 237, 0.15); color: var(--purple); }
+  .tag-both { background: rgba(234, 88, 12, 0.15); color: var(--orange); }
+  .tag-shipped { background: rgba(5, 150, 105, 0.15); color: var(--green); }
+
+  /* Milestone cards */
+  .milestone {
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    border-radius: 10px;
+    margin: 24px 0;
+    overflow: hidden;
+    border-left: 4px solid var(--blue);
+  }
+  .milestone.shipped { border-left-color: var(--green); }
+  .milestone-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+  }
+  .milestone.shipped .milestone-head { background: rgba(5, 150, 105, 0.08); }
+  .milestone-num {
+    width: 36px;
+    height: 36px;
+    background: var(--blue);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .milestone-num.done {
+    background: var(--green);
+    font-size: 18px;
+  }
+  .milestone-title { font-weight: 700; color: var(--ink); font-size: 17px; flex: 1; }
+  .milestone-body { padding: 24px; }
+  .shipped-badge {
+    display: inline-block;
+    background: var(--green);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 1000px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 8px;
+  }
+
+  /* Requirement rows */
+  .req-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 14px;
+  }
+  .req-item:last-child { border-bottom: none; }
+  .req-id {
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 13px;
+    min-width: 48px;
+    flex-shrink: 0;
+  }
+  .req-text { flex: 1; color: var(--ink2); }
+  .req-item .tag { flex-shrink: 0; }
+
+  /* Funnel visualization */
+  .funnel {
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+  .funnel-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink3);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .funnel-label .dropoff { color: var(--red); font-weight: 700; }
+  .funnel-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .funnel-name {
+    width: 180px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+  .funnel-name.shipped { color: var(--green); }
+  .funnel-name.removed { color: var(--red); }
+  .funnel-bar {
+    flex: 1;
+    height: 28px;
+    border-radius: 6px;
+    position: relative;
+    min-width: 80px;
+  }
+  .funnel-bar.full { background: linear-gradient(90deg, #4b5563, #6b7280); }
+  .funnel-bar.partial { background: linear-gradient(90deg, #93c5fd, #bfdbfe); }
+  .funnel-bar.dropoff { background: rgba(220, 38, 38, 0.2); }
+  .funnel-bar.success { background: rgba(5, 150, 105, 0.25); }
+  .funnel-bar.complete { background: linear-gradient(90deg, var(--blue), #3b82f6); }
+  .funnel-bar.complete span { color: #fff; }
+  .funnel-bar span {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .funnel-bar.success span { color: var(--green); }
+  .funnel-note {
+    font-size: 12px;
+    color: var(--ink3);
+    margin-top: 14px;
+    text-align: center;
+  }
+  .funnel-note strong { color: var(--red); }
+
+  /* Flow diagrams */
+  .flow-container { margin: 20px 0 28px; }
+  .flow-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .flow-row {
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    flex: 1;
+    min-width: 100px;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    position: relative;
+  }
+  .flow-node::after {
+    content: '›';
+    position: absolute;
+    right: 4px;
+    font-size: 16px;
+    color: rgba(0,0,0,0.2);
+  }
+  .flow-node:last-child::after { display: none; }
+  .flow-node.green { background: rgba(5, 150, 105, 0.15); color: var(--green); }
+  .flow-node.red { background: rgba(220, 38, 38, 0.12); color: var(--red); }
+  .flow-node.red span { text-decoration: line-through; }
+  .flow-node.blue { background: rgba(17, 109, 255, 0.12); color: var(--blue); }
+  .flow-node.dark-blue { background: var(--blue); color: #fff; }
+  .flow-node.dark-blue::after { color: rgba(255,255,255,0.5); }
+  .flow-node.yellow { background: rgba(234, 88, 12, 0.12); color: var(--orange); }
+  .flow-node.grey { background: rgba(0,0,0,0.06); color: var(--ink3); }
+
+  /* BI Events */
+  .bi-list { display: flex; flex-direction: column; gap: 6px; }
+  .bi-event {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    font-size: 13px;
+  }
+  .bi-trigger {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+  }
+  .bi-trigger.load { background: rgba(124, 58, 237, 0.15); color: var(--purple); }
+  .bi-trigger.click { background: rgba(17, 109, 255, 0.15); color: var(--blue); }
+  .bi-trigger.success { background: rgba(5, 150, 105, 0.15); color: var(--green); }
+  .bi-trigger.error { background: rgba(220, 38, 38, 0.12); color: var(--red); }
+  .bi-event code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px;
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    min-width: 180px;
+  }
+  .bi-event .desc { color: var(--ink2); flex: 1; }
+
+  /* Callout */
+  .callout {
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 16px 0;
+    font-size: 14px;
+    border-left: 4px solid;
+  }
+  .callout-info { background: rgba(17, 109, 255, 0.08); border-left-color: var(--blue); }
+  .callout-success { background: rgba(5, 150, 105, 0.08); border-left-color: var(--green); }
+
+  /* Footer */
+  .footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink3);
+  }
+
+  @media (max-width: 700px) {
+    body { padding: 16px; }
+    .hero { padding: 24px; }
+    .flow-row { flex-direction: column; }
+    .flow-node { min-width: 100%; }
+    .flow-node::after { display: none; }
+    .funnel-name { width: 140px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="wix-checking-roadmap-v2.html" class="back-link">← Back to Strategy Overview</a>
+
+<div class="hero">
+  <div class="badge">PRD v4.0</div>
+  <h1>One-Click Onboarding</h1>
+  <p class="subtitle">
+    Remove onboarding friction by eliminating pre-creation wizard steps. A single "Activate" click creates the account and issues a virtual card — security steps move to post-creation.
+  </p>
+</div>
+
+<div class="meta-bar">
+  <div class="meta-item"><span class="meta-label">Version</span><span class="meta-value">4.0</span></div>
+  <div class="meta-item"><span class="meta-label">Date</span><span class="meta-value">January 24, 2026</span></div>
+  <div class="meta-item"><span class="meta-label">Status</span><span class="meta-value">Draft</span></div>
+  <div class="meta-item"><span class="meta-label">Product Area</span><span class="meta-value">Wix Checking / Onboarding</span></div>
+  <div class="meta-item"><span class="meta-label">Rollout</span><span class="meta-value">Per-milestone feature toggles</span></div>
+</div>
+
+<!-- 01 - What Changes & Why -->
+<section id="what-changes">
+  <div class="section-num">01 — What Changes & Why</div>
+  <h2>What Changes & Why</h2>
+
+  <p>Today's onboarding uses a <strong>multi-step wizard</strong> that collects SSN, enrolls 2FA, verifies password, reviews business info, and collects card + shipping details — all before the account is created. Every step loses users. We want to collapse this into a <strong>single "Activate" click</strong>.</p>
+
+  <h3>The Problem: Onboarding Funnel Drop-off</h3>
+  <div class="funnel">
+    <div class="funnel-label">Post-intent conversion: 3,025 clicked "Open Account" → 1,705 accounts created (56.4%) — <span class="dropoff">43.6% drop-off in the wizard</span></div>
+    <div class="funnel-row">
+      <span class="funnel-name">Value Proposition</span>
+      <div class="funnel-bar full" style="width: 100%;"><span>13,094 (100%)</span></div>
+    </div>
+    <div class="funnel-row">
+      <span class="funnel-name">Click Open Account</span>
+      <div class="funnel-bar partial" style="width: 23.1%;"><span>3,025 (23.1%)</span></div>
+    </div>
+    <div class="funnel-row">
+      <span class="funnel-name removed">Verify SSN</span>
+      <div class="funnel-bar dropoff" style="width: 23.5%;"><span>3,071 (23.5%)</span></div>
+    </div>
+    <div class="funnel-row">
+      <span class="funnel-name shipped">Import Business Info</span>
+      <div class="funnel-bar success" style="width: 23.1%;"><span>SHIPPED ✓</span></div>
+    </div>
+    <div class="funnel-row">
+      <span class="funnel-name removed">Review Card Name</span>
+      <div class="funnel-bar dropoff" style="width: 20.6%;"><span>2,699 (20.6%)</span></div>
+    </div>
+    <div class="funnel-row">
+      <span class="funnel-name removed">Card Shipment Address</span>
+      <div class="funnel-bar dropoff" style="width: 18.4%;"><span>2,409 (18.4%)</span></div>
+    </div>
+    <div class="funnel-row">
+      <span class="funnel-name removed">Final Step Consent</span>
+      <div class="funnel-bar dropoff" style="width: 17.5%;"><span>2,294 (17.5%)</span></div>
+    </div>
+    <div class="funnel-row">
+      <span class="funnel-name">Account Created</span>
+      <div class="funnel-bar complete" style="width: 13%;"><span>1,705 (13.0%)</span></div>
+    </div>
+    <div class="funnel-note"><strong>43.6% of users who click "Open Account" never finish.</strong> Each wizard step bleeds more users. Red steps are being removed or deferred.</div>
+  </div>
+
+  <h3>What we're changing</h3>
+  <table>
+    <tr><th>Step</th><th>Today</th><th>After</th><th>Status</th></tr>
+    <tr>
+      <td><strong>Business info review</strong></td>
+      <td>"Import my info" wizard step</td>
+      <td>Removed from wizard. Backend auto-populates.</td>
+      <td><span class="tag tag-shipped">✓ SHIPPED</span></td>
+    </tr>
+    <tr>
+      <td><strong>SSN entry</strong></td>
+      <td>User enters last 4 in wizard</td>
+      <td>Moved to post-creation security flow</td>
+      <td><span class="tag tag-fe">Upcoming</span></td>
+    </tr>
+    <tr>
+      <td><strong>2FA enrollment</strong></td>
+      <td>Phone + code in wizard</td>
+      <td>Moved to post-creation security flow</td>
+      <td><span class="tag tag-fe">Upcoming</span></td>
+    </tr>
+    <tr>
+      <td><strong>Card details & shipping</strong></td>
+      <td>Cardholder name, shipping in wizard</td>
+      <td>Removed. Virtual card auto-issued.</td>
+      <td><span class="tag tag-fe">Upcoming</span></td>
+    </tr>
+    <tr>
+      <td><strong>Consent UX</strong></td>
+      <td>Separate final wizard step</td>
+      <td>Added inline to activation screen</td>
+      <td><span class="tag tag-fe">Upcoming</span></td>
+    </tr>
+    <tr>
+      <td><strong>Password verification</strong></td>
+      <td>Already post-creation</td>
+      <td>No change</td>
+      <td style="color: var(--ink3);">Existing</td>
+    </tr>
+  </table>
+</section>
+
+<!-- 02 - New Onboarding Flow -->
+<section id="flow">
+  <div class="section-num">02 — New Onboarding Flow</div>
+  <h2>New Onboarding Flow</h2>
+
+  <h3>Before (Legacy Wizard)</h3>
+  <div class="flow-container">
+    <div class="flow-label">Onboarding — All steps block account creation</div>
+    <div class="flow-row">
+      <div class="flow-node green">Welcome</div>
+      <div class="flow-node red"><span>SSN Entry</span></div>
+      <div class="flow-node red"><span>2FA Enrollment</span></div>
+      <div class="flow-node red"><span>Business Info Review</span></div>
+      <div class="flow-node red"><span>Card + Shipping</span></div>
+      <div class="flow-node red"><span>Consent Step</span></div>
+      <div class="flow-node blue">Account Created</div>
+    </div>
+    <div class="flow-label" style="margin-top: 12px;">Post-creation</div>
+    <div class="flow-row">
+      <div class="flow-node grey">Password Verification</div>
+      <div class="flow-node green">Dashboard</div>
+    </div>
+  </div>
+
+  <h3>After (One Step)</h3>
+  <div class="flow-container">
+    <div class="flow-label">Onboarding — Single click (after all milestones)</div>
+    <div class="flow-row">
+      <div class="flow-node green">Welcome + Consent + Info</div>
+      <div class="flow-node dark-blue">Click "Activate"</div>
+      <div class="flow-node dark-blue">Account + Virtual Card Created</div>
+      <div class="flow-node blue">Dashboard</div>
+    </div>
+    <div class="flow-label" style="margin-top: 12px;">Post-creation security (gated — must complete before any dashboard action)</div>
+    <div class="flow-row">
+      <div class="flow-node yellow">SSN Verification</div>
+      <div class="flow-node grey">Password Verification (existing)</div>
+      <div class="flow-node yellow">2FA Enrollment</div>
+    </div>
+    <div class="flow-label" style="margin-top: 12px;">Optional post-creation</div>
+    <div class="flow-row">
+      <div class="flow-node grey" style="font-style: italic;">Physical Card Request</div>
+    </div>
+  </div>
+
+  <div class="callout callout-info">
+    <strong>Key principle:</strong> Get the user into the product immediately. Security steps (SSN, password, 2FA) are mandatory but happen after account creation — any action prompts them to complete these first.
+  </div>
+</section>
+
+<!-- 03 - M1 -->
+<section id="m1">
+  <div class="section-num">03 — Milestone 1</div>
+  <h2>M1: Remove Business Info Step</h2>
+
+  <div class="milestone shipped">
+    <div class="milestone-head">
+      <div class="milestone-num done">✓</div>
+      <div class="milestone-title">Remove Business Info Step <span class="shipped-badge">SHIPPED</span></div>
+    </div>
+    <div class="milestone-body">
+      <p>The "Import my info" Business Info wizard step has been removed. Business data continues to be auto-populated by the backend from the Wix merchant profile.</p>
+      <div class="req-item"><span class="req-id">M1.1</span><span class="req-text">Removed Business Info step from wizard</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M1.2</span><span class="req-text">Business data continues auto-populated by backend</span><span class="tag tag-be">BE</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 - M2 -->
+<section id="m2">
+  <div class="section-num">04 — Milestone 2</div>
+  <h2>M2: Virtual Card Default & Remove Shipping</h2>
+
+  <div class="milestone">
+    <div class="milestone-head">
+      <div class="milestone-num">2</div>
+      <div class="milestone-title">Virtual Card by Default, Physical Card Optional</div>
+    </div>
+    <div class="milestone-body">
+      <p>Virtual card is issued automatically during account creation. Card details are sent directly to the banking partner. Physical card becomes an optional post-creation request.</p>
+      <div class="req-item"><span class="req-id">M2.1</span><span class="req-text">Remove DebitCardInfo step from wizard</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M2.2</span><span class="req-text">Card details sent directly to banking partner</span><span class="tag tag-both">FE+BE</span></div>
+      <div class="req-item"><span class="req-id">M2.3</span><span class="req-text">Account creation issues virtual card via Unit API</span><span class="tag tag-be">BE</span></div>
+      <div class="req-item"><span class="req-id">M2.4</span><span class="req-text">Card Management supports multiple cards with tabs</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M2.5</span><span class="req-text">"Issue Physical Card" post-creation flow</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M2.6</span><span class="req-text">Freeze/replace/report-lost actions work per card</span><span class="tag tag-both">FE+BE</span></div>
+      <div class="req-item"><span class="req-id">M2.7</span><span class="req-text">Success screen shows virtual card + physical card CTA</span><span class="tag tag-fe">FE</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 - M3 -->
+<section id="m3">
+  <div class="section-num">05 — Milestone 3</div>
+  <h2>M3: Defer Security Steps to Post-Creation</h2>
+
+  <div class="milestone">
+    <div class="milestone-head">
+      <div class="milestone-num">3</div>
+      <div class="milestone-title">Move SSN & 2FA to Post-Creation Security Flow</div>
+    </div>
+    <div class="milestone-body">
+      <p>SSN and 2FA move from the wizard to join the existing password verification step. Fixed order: SSN → Password → 2FA. Every dashboard action is gated until security flow completes.</p>
+      <div class="req-item"><span class="req-id">M3.1</span><span class="req-text">Account creation succeeds without user-entered SSN or 2FA</span><span class="tag tag-be">BE</span></div>
+      <div class="req-item"><span class="req-id">M3.2</span><span class="req-text">Remove SSN entry and 2FA from wizard</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M3.3</span><span class="req-text">Add SSN + 2FA to post-creation security flow</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M3.4</span><span class="req-text">Persistent "Complete Security Setup" banner</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M3.5</span><span class="req-text">Every action gated behind security flow</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M3.6</span><span class="req-text">Skip 2FA if user already has Wix-level 2FA</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M3.7</span><span class="req-text">Gated actions redirect to security flow</span><span class="tag tag-fe">FE</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 - M4 -->
+<section id="m4">
+  <div class="section-num">06 — Milestone 4</div>
+  <h2>M4: Consent UX & Kill the Wizard</h2>
+
+  <div class="milestone">
+    <div class="milestone-head">
+      <div class="milestone-num">4</div>
+      <div class="milestone-title">Inline Consent on Activation Screen</div>
+    </div>
+    <div class="milestone-body">
+      <p>Consent moves inline to the welcome/activation screen. The last wizard step is removed — killing the onboarding wizard entirely.</p>
+      <div class="req-item"><span class="req-id">M4.1</span><span class="req-text">Consent checkbox on activation screen</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M4.2</span><span class="req-text">Info highlight about Business/Personal info</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M4.3</span><span class="req-text">Balance migration notice</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M4.4</span><span class="req-text">Remove Consent/FinishSetUp wizard step</span><span class="tag tag-fe">FE</span></div>
+      <div class="req-item"><span class="req-id">M4.5</span><span class="req-text">Checkbox links to legal documents</span><span class="tag tag-fe">FE</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 - KPIs -->
+<section id="kpis">
+  <div class="section-num">07 — KPIs & Success Metrics</div>
+  <h2>KPIs & Success Metrics</h2>
+
+  <h3>North Star Metric</h3>
+  <table>
+    <tr><th>Metric</th><th>Current</th><th>Target</th><th>What It Measures</th></tr>
+    <tr>
+      <td><strong>Click "Open Account" → Account Created</strong></td>
+      <td>56.4%</td>
+      <td>> 90%</td>
+      <td>Post-intent wizard completion — the drop we're eliminating</td>
+    </tr>
+  </table>
+
+  <h3>Per-Milestone KPIs</h3>
+  <table>
+    <tr><th>Milestone</th><th>Steps Removed</th><th>Current Drop-off</th><th>Metric to Track</th></tr>
+    <tr><td><strong>M1</strong> (Shipped)</td><td>Import Business Info</td><td>~0.7% drop</td><td>Steps no longer in funnel</td></tr>
+    <tr><td><strong>M2</strong></td><td>Card name, shipping address</td><td>4% drop across 3 steps</td><td>Virtual card issuance; physical card request rate</td></tr>
+    <tr><td><strong>M3</strong></td><td>Verify SSN (moved)</td><td>Blocks funnel entry</td><td>Security flow completion; abandonment rate</td></tr>
+    <tr><td><strong>M4</strong></td><td>Final Consent step</td><td>3.1% drop</td><td>Wizard eliminated; consent_checkbox_toggled</td></tr>
+  </table>
+
+  <h3>Monitoring</h3>
+  <ul>
+    <li><strong>Funnel dashboard</strong> — updated per milestone to reflect removed steps</li>
+    <li><strong>Security flow completion</strong> — SSN → Password → 2FA completion and abandonment</li>
+    <li><strong>Physical card uptake</strong> — % of users who request physical card after virtual</li>
+  </ul>
+</section>
+
+<!-- 08 - BI Events -->
+<section id="bi-events">
+  <div class="section-num">08 — BI Events</div>
+  <h2>BI Events</h2>
+
+  <div class="bi-list">
+    <div class="bi-event"><span class="bi-trigger load">Load</span><code>activation_screen_loaded</code><span class="desc">Welcome/activation screen displayed</span></div>
+    <div class="bi-event"><span class="bi-trigger click">Click</span><code>consent_checkbox_toggled</code><span class="desc">User checks/unchecks consent</span></div>
+    <div class="bi-event"><span class="bi-trigger click">Click</span><code>activate_button_clicked</code><span class="desc">User clicks "Activate"</span></div>
+    <div class="bi-event"><span class="bi-trigger success">Success</span><code>account_creation_success</code><span class="desc">Account + virtual card created</span></div>
+    <div class="bi-event"><span class="bi-trigger error">Error</span><code>account_creation_failed</code><span class="desc">Account creation failed</span></div>
+    <div class="bi-event"><span class="bi-trigger load">Load</span><code>security_flow_started</code><span class="desc">User enters security setup</span></div>
+    <div class="bi-event"><span class="bi-trigger success">Success</span><code>security_step_completed</code><span class="desc">User completes a security step</span></div>
+    <div class="bi-event"><span class="bi-trigger error">Error</span><code>security_step_failed</code><span class="desc">User fails a security step</span></div>
+    <div class="bi-event"><span class="bi-trigger success">Success</span><code>security_flow_completed</code><span class="desc">All 3 security steps done</span></div>
+    <div class="bi-event"><span class="bi-trigger click">Click</span><code>security_flow_abandoned</code><span class="desc">User exits before completing</span></div>
+    <div class="bi-event"><span class="bi-trigger click">Click</span><code>physical_card_requested</code><span class="desc">User initiates physical card request</span></div>
+    <div class="bi-event"><span class="bi-trigger success">Success</span><code>physical_card_issued</code><span class="desc">Physical card request submitted</span></div>
+    <div class="bi-event"><span class="bi-trigger click">Click</span><code>gated_action_attempted</code><span class="desc">User attempts gated action before security complete</span></div>
+  </div>
+</section>
+
+<!-- 09 - Edge Cases -->
+<section id="edge-cases">
+  <div class="section-num">09 — Edge Cases</div>
+  <h2>Edge Cases & Error States</h2>
+
+  <table>
+    <tr><th style="width: 32%;">Scenario</th><th>Behavior</th></tr>
+    <tr>
+      <td>Banking partner needs more info (KYC insufficient)</td>
+      <td><strong>"Awaiting Documents"</strong> state — same screen as today. User uploads required docs.</td>
+    </tr>
+    <tr>
+      <td>Application rejected</td>
+      <td><strong>Rejection screen</strong> — same as today. Contact support option.</td>
+    </tr>
+    <tr>
+      <td>Application pending review</td>
+      <td><strong>"Account Under Review"</strong> screen — same as today. Notification when resolved.</td>
+    </tr>
+    <tr>
+      <td>User already has a Checking account</td>
+      <td>Skip activation — go straight to dashboard.</td>
+    </tr>
+    <tr>
+      <td>User closes browser during account creation</td>
+      <td>Backend completes the request. On next visit, check capability status and show appropriate state.</td>
+    </tr>
+    <tr>
+      <td>User has existing Wix 2FA</td>
+      <td>2FA step is automatically skipped in the security flow. Still needs SSN + password.</td>
+    </tr>
+    <tr>
+      <td>User never completes security steps</td>
+      <td>Account exists. Dashboard is viewable. Every action prompts the security flow. Banner persists.</td>
+    </tr>
+    <tr>
+      <td>User's password doesn't meet banking grade</td>
+      <td>Password step prompts upgrade. Can't proceed to 2FA until password is compliant.</td>
+    </tr>
+    <tr>
+      <td>Physical card request fails</td>
+      <td>Error in the request modal. Virtual card is unaffected. User can retry.</td>
+    </tr>
+    <tr>
+      <td>User freezes virtual card, then uses physical (or vice versa)</td>
+      <td>Cards are independent. Freezing one doesn't affect the other.</td>
+    </tr>
+  </table>
+</section>
+
+<!-- 10 - Open Questions -->
+<section id="open-questions">
+  <div class="section-num">10 — Open Questions</div>
+  <h2>Open Questions</h2>
+
+  <h3>Open</h3>
+  <table>
+    <tr><th style="width: 5%;">#</th><th>Question</th><th style="width: 20%;">Who Decides</th><th style="width: 12%;">Status</th></tr>
+    <tr>
+      <td>1</td>
+      <td>What additional elements should the <strong>Consent UX</strong> include beyond the checkbox? (e.g., terms summary, benefit highlights, legal doc previews)</td>
+      <td>Product + Legal</td>
+      <td style="color: var(--orange); font-weight: 600;">Open</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>For the security flow SSN step — should the last 4 digits be pre-filled for companies where we have KYC data, or always require manual entry?</td>
+      <td>Product + Eng</td>
+      <td style="color: var(--orange); font-weight: 600;">Open</td>
+    </tr>
+  </table>
+
+  <h3>Resolved</h3>
+  <table>
+    <tr><th style="width: 5%;">#</th><th>Question</th><th>Resolution</th></tr>
+    <tr><td>✓</td><td>Is a single consent checkbox legally sufficient?</td><td>Yes — approved by Legal.</td></tr>
+    <tr><td>✓</td><td>Can the banking partner issue virtual + physical cards separately?</td><td>Yes — approved by Banking team.</td></tr>
+    <tr><td>✓</td><td>Milestone ordering — sequential or bundled?</td><td>Ship separately, each with its own feature toggle.</td></tr>
+    <tr><td>✓</td><td>Should Wix-level 2FA count for Checking?</td><td>Yes — same system, Checking just makes it mandatory.</td></tr>
+    <tr><td>✓</td><td>What actions are restricted without security steps?</td><td>Everything. All dashboard actions are gated.</td></tr>
+    <tr><td>✓</td><td>Is the security setup banner dismissible?</td><td>No — persistent until all steps are done.</td></tr>
+    <tr><td>✓</td><td>Security steps order?</td><td>Fixed: SSN → Password → 2FA.</td></tr>
+    <tr><td>✓</td><td>Is SSN still required by the banking API?</td><td>Yes — sent from Wix Payments data. User confirms last 4 digits post-creation.</td></tr>
+  </table>
+</section>
+
+<div class="footer">
+  Default On Phase I — One Step Onboarding — PRD v4.0 — January 2026
+</div>
+
+</div>
+</body>
+</html>
