@@ -307,7 +307,7 @@
   <ol>
     <li><a href="#what-changes">What Changes &amp; Why</a></li>
     <li><a href="#flow">New Onboarding Flow</a></li>
-    <li><a href="#m1">Milestone 1 — Remove Business Info Step (SHIPPED)</a></li>
+    <li><a href="#m1">Milestone 1 — Remove Business Info Step (IMPLEMENTED)</a></li>
     <li><a href="#m2">Milestone 2 — Virtual Card Default &amp; Remove Shipping</a></li>
     <li><a href="#m3">Milestone 3 — Defer Security Steps to Post-Creation</a></li>
     <li><a href="#m4">Milestone 4 — Consent UX &amp; Kill the Wizard</a></li>
@@ -336,31 +336,31 @@
     </div>
     <div class="funnel-row">
       <span class="funnel-name">Click Open Account</span>
-      <div class="funnel-bar partial" style="width: 23.1%;"><span>3,025 (23.1%)</span></div>
+      <div class="funnel-bar partial" style="width: 80%;"><span>3,025 (23.1%)</span></div>
     </div>
     <div class="funnel-row">
       <span class="funnel-name removed">Verify SSN</span>
-      <div class="funnel-bar dropoff" style="width: 23.5%;"><span>3,071 (23.5%)</span></div>
+      <div class="funnel-bar dropoff" style="width: 72%;"><span>3,071 (23.5%)</span></div>
     </div>
     <div class="funnel-row">
       <span class="funnel-name shipped">Import Business Info</span>
-      <div class="funnel-bar success" style="width: 23.1%;"><span>SHIPPED &#10003;</span></div>
+      <div class="funnel-bar success" style="width: 64%;"><span>IMPLEMENTED &#10003;</span></div>
     </div>
     <div class="funnel-row">
       <span class="funnel-name removed">Review Card Name</span>
-      <div class="funnel-bar dropoff" style="width: 20.6%;"><span>2,699 (20.6%)</span></div>
+      <div class="funnel-bar dropoff" style="width: 56%;"><span>2,699 (20.6%)</span></div>
     </div>
     <div class="funnel-row">
       <span class="funnel-name removed">Card Shipment Address</span>
-      <div class="funnel-bar dropoff" style="width: 18.4%;"><span>2,409 (18.4%)</span></div>
+      <div class="funnel-bar dropoff" style="width: 48%;"><span>2,409 (18.4%)</span></div>
     </div>
     <div class="funnel-row">
       <span class="funnel-name removed">Final Step (Consent)</span>
-      <div class="funnel-bar dropoff" style="width: 17.5%;"><span>2,294 (17.5%)</span></div>
+      <div class="funnel-bar dropoff" style="width: 40%;"><span>2,294 (17.5%)</span></div>
     </div>
     <div class="funnel-row">
       <span class="funnel-name">Account Created</span>
-      <div class="funnel-bar complete" style="width: 13%;"><span>1,705 (13.0%)</span></div>
+      <div class="funnel-bar complete" style="width: 32%;"><span>1,705 (13.0%)</span></div>
     </div>
     <div class="funnel-note"><strong>43.6% of users who click "Open Account" never finish.</strong> Each wizard step bleeds ~2-3% more users. The red steps are being removed or deferred.</div>
   </div>
@@ -372,7 +372,7 @@
       <td><strong>Business info review</strong></td>
       <td>"Import my info" wizard step</td>
       <td><strong>Removed from wizard.</strong> Business data continues to be auto-populated by the backend from the Wix merchant profile (existing behavior). The UI step that displayed it for review is gone.</td>
-      <td><span class="tag tag-shipped">&#10003; SHIPPED</span></td>
+      <td><span class="tag tag-shipped">&#10003; IMPLEMENTED</span></td>
     </tr>
     <tr>
       <td><strong>SSN entry</strong></td>
@@ -475,7 +475,7 @@
   <div class="milestone shipped">
     <div class="milestone-head">
       <div class="milestone-num done">&#10003;</div>
-      <div class="milestone-title">Remove Business Info Step <span class="shipped-badge">SHIPPED</span></div>
+      <div class="milestone-title">Remove Business Info Step <span class="shipped-badge">IMPLEMENTED</span></div>
     </div>
     <div class="milestone-body">
       <p>The "Import my info" Business Info wizard step has been removed. This was the first PR shipped for this initiative.</p>
