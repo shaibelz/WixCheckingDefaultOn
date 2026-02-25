@@ -68,6 +68,11 @@ body {
 .hero {
   min-height: 100vh; display: flex; align-items: center;
   padding: 4rem; max-width: 1100px; margin: 0 auto;
+  position: relative;
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
 }
 .hero-inner { max-width: 680px; }
 .hero h1 {
@@ -648,6 +653,10 @@ footer {
     <h1 class="fi fi-d1">Existing Cohorts Conversion:<br>"Earn the Default"</h1>
     <p class="hero-sub fi fi-d2">Converting 75K eligible users through education, consent, and a graduated escalation path - earning the right to make Wix Checking the standard.</p>
     
+    <div class="scroll-hint fi fi-d3" style="position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:4px; animation: scrollBounce 2s ease-in-out infinite; opacity:0.5;">
+      <span style="font-size:11px; font-weight:500; color:var(--ink3); letter-spacing:0.5px; text-transform:uppercase;">Scroll</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
   </div>
 </div>
 
@@ -1221,6 +1230,19 @@ const fiObs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
 }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.fi').forEach(el => fiObs.observe(el));
+
+/* ── Scroll-hint fade-out ── */
+const scrollHint = document.querySelector('.scroll-hint');
+if (scrollHint) {
+  let hintHidden = false;
+  window.addEventListener('scroll', () => {
+    if (!hintHidden && window.scrollY > 80) {
+      scrollHint.style.transition = 'opacity 0.6s ease';
+      scrollHint.style.opacity = '0';
+      hintHidden = true;
+    }
+  }, { passive: true });
+}
 
 /* ── Scrollytelling ── */
 const steps = document.querySelectorAll('#scrolly-main .step');
