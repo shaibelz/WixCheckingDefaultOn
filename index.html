@@ -1339,7 +1339,7 @@ function setEscFunnel(activeLevers) {
     activeLevers.includes(2) ? 'var(--l2)' : null,
     activeLevers.includes(3) ? 'var(--l3)' : null,
     activeLevers.includes(4) ? 'var(--l4)' : null,
-    activeLevers.length === 4 ? 'var(--green)' : null,
+    activeLevers.includes(4) ? (activeLevers.length === 4 ? 'var(--green)' : 'var(--l4)') : null,
   ];
 
   wf2Rows.forEach((r, i) => {
