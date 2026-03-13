@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wix Checking — The Barrier Strategy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #f8f7f4;
+  --white: #ffffff;
+  --warm: #f3f1ec;
+  --ink: #1a1a1a;
+  --ink2: #555;
+  --ink3: #888;
+  --ink4: #bbb;
+  --rule: #e5e3de;
+  --l1: #0d9488; --l1bg: #f0fdfa; --l1b: #99f6e4;
+  --l2: #7c3aed; --l2bg: #f5f3ff; --l2b: #ddd6fe;
+  --l3: #e11d48; --l3bg: #fff1f2; --l3b: #fecdd3;
+  --l4: #ea580c; --l4bg: #fff7ed; --l4b: #fed7aa;
+  --green: #059669; --greenbg: #ecfdf5; --greenb: #a7f3d0;
+  --red: #dc2626; --redbg: #fef2f2; --redb: #fecaca;
+  --blue: #2563eb; --bluebg: #eff6ff; --blueb: #bfdbfe;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg); color: var(--ink);
+  line-height: 1.65; -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Pills ── */
+.lp {
+  display: inline-flex; align-items: center;
+  font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; padding: 0.15rem 0.5rem;
+  border-radius: 100px; white-space: nowrap;
+}
+.lp-1 { background: var(--l1bg); color: var(--l1); border: 1px solid var(--l1b); }
+.lp-2 { background: var(--l2bg); color: var(--l2); border: 1px solid var(--l2b); }
+.lp-3 { background: var(--l3bg); color: var(--l3); border: 1px solid var(--l3b); }
+.lp-4 { background: var(--l4bg); color: var(--l4); border: 1px solid var(--l4b); }
+.lp-green { background: var(--greenbg); color: var(--green); border: 1px solid var(--greenb); }
+.lp-blue { background: var(--bluebg); color: var(--blue); border: 1px solid var(--blueb); }
+
+/* ── Chapter label ── */
+.ch {
+  font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.18em; color: var(--ink3); margin-bottom: 1rem;
+}
+
+/* ── Fade-in ── */
+.fi {
+  opacity: 0; transform: translateY(24px);
+  transition: all 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.fi.vis { opacity: 1; transform: none; }
+.fi-d1 { transition-delay: 0.08s; }
+.fi-d2 { transition-delay: 0.16s; }
+.fi-d3 { transition-delay: 0.24s; }
+.fi-d4 { transition-delay: 0.32s; }
+
+/* ══════════ HERO ══════════ */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: 4rem; max-width: 1100px; margin: 0 auto;
+  position: relative;
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+.hero-inner { max-width: 680px; }
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 800; line-height: 1.08;
+  letter-spacing: -0.035em; margin-bottom: 1.25rem;
+}
+.hero-sub {
+  font-size: 1.05rem; color: var(--ink2);
+  max-width: 520px; margin-bottom: 3rem;
+}
+.hero-nums { display: flex; gap: 3rem; flex-wrap: wrap; }
+.hero-num-val {
+  font-size: 1.9rem; font-weight: 800; letter-spacing: -0.03em;
+}
+.hero-num-val small { font-size: 0.5em; font-weight: 500; color: var(--ink3); }
+.hero-num-lbl { font-size: 0.7rem; color: var(--ink3); font-weight: 500; margin-top: 0.1rem; }
+
+/* ══════════ SCROLLYTELLING ══════════ */
+.scrolly {
+  position: relative; display: flex;
+  max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+}
+.scrolly-viz {
+  position: sticky; top: 10vh; width: 55%;
+  height: 80vh; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.scrolly-text {
+  width: 45%; padding: 40vh 0 40vh 2rem;
+}
+.step {
+  min-height: 75vh; display: flex; align-items: center;
+}
+.step-card {
+  background: rgba(255,255,255,0.96);
+  border-radius: 14px; padding: 2rem 2.25rem;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.04);
+  max-width: 360px;
+  opacity: 0.15; transform: translateY(12px);
+  transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.step.active .step-card { opacity: 1; transform: none; }
+.step-intro {
+  max-width: 380px;
+  opacity: 0.15; transform: translateY(12px);
+  transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.step.active .step-intro { opacity: 1; transform: none; }
+.step-intro strong {
+  display: block; font-size: 1.3rem; font-weight: 800;
+  letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 0.6rem;
+}
+.step-intro p { font-size: 0.92rem; color: var(--ink2); line-height: 1.6; }
+
+.step-card h3 {
+  font-size: 1.15rem; font-weight: 700;
+  letter-spacing: -0.02em; margin-bottom: 0.6rem; line-height: 1.3;
+}
+.step-card p { font-size: 0.84rem; color: var(--ink2); line-height: 1.6; }
+.step-card .lp { margin-bottom: 0.5rem; }
+.step-stat {
+  font-size: 2.8rem; font-weight: 800;
+  letter-spacing: -0.03em; line-height: 1;
+  margin: 0.25rem 0 0.5rem;
+}
+
+/* ── Waterfall Funnel ── */
+.wf { width: 100%; max-width: 500px; }
+.wf-row {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 0.2rem;
+  transition: opacity 0.5s ease;
+}
+.wf-lbl {
+  width: 135px; text-align: right; flex-shrink: 0;
+  font-size: 0.76rem; font-weight: 500; color: var(--ink3);
+}
+.wf-track {
+  flex: 1; height: 30px; background: #eae8e3;
+  border-radius: 4px; overflow: hidden;
+}
+.wf-bar {
+  height: 100%; border-radius: 4px;
+  background: #c8c6c0;
+  transition: width 0.8s cubic-bezier(0.16,1,0.3,1), background 0.4s ease;
+  width: 0;
+}
+.wf-val {
+  width: 48px; flex-shrink: 0; text-align: right;
+  font-size: 0.82rem; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.wf-gap {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.25rem 0 0.25rem 144px;
+  opacity: 0; transform: translateX(-8px);
+  transition: all 0.4s ease;
+}
+.wf-gap.show { opacity: 1; transform: none; }
+.wf-gap.dim { opacity: 0.25; }
+.wf-gap-line {
+  width: 2px; height: 14px; background: var(--ink4);
+  border-radius: 1px; transition: background 0.4s ease;
+}
+.wf-gap-pct {
+  font-size: 0.68rem; font-weight: 700; color: var(--ink3);
+  transition: color 0.4s ease;
+}
+.wf-gap-lever { opacity: 0; transition: opacity 0.3s ease; }
+.wf-gap.show .wf-gap-lever { opacity: 1; }
+
+/* ══════════ SECTIONS ══════════ */
+.sect {
+  max-width: 1000px; margin: 0 auto; padding: 6rem 2rem;
+}
+.sect-title {
+  font-size: clamp(1.5rem, 3.2vw, 2rem);
+  font-weight: 800; letter-spacing: -0.025em;
+  line-height: 1.15; margin-bottom: 0.6rem;
+}
+.sect-sub {
+  font-size: 0.95rem; color: var(--ink2);
+  max-width: 540px; line-height: 1.6; margin-bottom: 2.5rem;
+}
+
+/* ── Classification grid ── */
+.classify-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.5rem; max-width: 720px;
+}
+.classify-card {
+  border-radius: 12px; padding: 1.75rem;
+}
+.classify-card.friction { background: var(--warm); }
+.classify-card.fear {
+  background: var(--redbg); border: 1px solid var(--redb);
+}
+.classify-tag {
+  font-size: 0.58rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.12em; margin-bottom: 0.6rem;
+}
+.friction .classify-tag { color: var(--ink3); }
+.fear .classify-tag { color: var(--red); }
+.classify-title {
+  font-size: 1rem; font-weight: 700; margin-bottom: 0.85rem;
+}
+.classify-item {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.35rem 0; font-size: 0.82rem; color: var(--ink2);
+}
+.classify-item:not(:last-of-type) { border-bottom: 1px solid rgba(0,0,0,0.06); }
+.classify-impact {
+  margin-top: 1rem; padding-top: 0.75rem;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  font-size: 0.85rem; font-weight: 700;
+}
+.friction .classify-impact { color: var(--ink3); }
+.fear .classify-impact { color: var(--red); }
+
+/* ── Pivot ── */
+.pivot {
+  text-align: center; padding: 7rem 2rem;
+  background: var(--white);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.pivot-eye {
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.15em; color: var(--ink3); margin-bottom: 1.5rem;
+}
+.pivot h2 {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 900; letter-spacing: -0.04em;
+  line-height: 1.05; margin-bottom: 1rem;
+  max-width: 620px; margin-left: auto; margin-right: auto;
+}
+.pivot p {
+  font-size: 1.05rem; color: var(--ink2);
+  max-width: 480px; margin: 0 auto; line-height: 1.6;
+}
+
+/* ── Barrier Walls (scrollytelling viz) ── */
+.barrier-stack {
+  display: flex; flex-direction: column; gap: 12px;
+  width: 100%; max-width: 380px;
+}
+.bw {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.15rem 1.4rem; border-radius: 10px;
+  transition: all 0.6s cubic-bezier(0.16,1,0.3,1);
+  position: relative; overflow: hidden;
+}
+.bw-1 { background: var(--l1bg); border: 1.5px solid var(--l1b); }
+.bw-2 { background: var(--l2bg); border: 1.5px solid var(--l2b); }
+.bw-3 { background: var(--l3bg); border: 1.5px solid var(--l3b); }
+.bw-4 { background: var(--l4bg); border: 1.5px solid var(--l4b); }
+.bw-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  transition: background 0.4s ease;
+}
+.bw-1 .bw-dot { background: var(--l1); }
+.bw-2 .bw-dot { background: var(--l2); }
+.bw-3 .bw-dot { background: var(--l3); }
+.bw-4 .bw-dot { background: var(--l4); }
+.bw-content { flex: 1; }
+.bw-label {
+  font-size: 0.82rem; font-weight: 600; color: var(--ink);
+  transition: all 0.4s ease;
+}
+.bw-sub {
+  font-size: 0.65rem; color: var(--ink3); font-weight: 500;
+  margin-top: 0.1rem; transition: all 0.4s ease;
+}
+.bw-check {
+  width: 20px; height: 20px; flex-shrink: 0;
+  opacity: 0; transform: scale(0.5);
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  color: var(--green);
+}
+.bw-solution {
+  font-size: 0.62rem; font-weight: 600; color: var(--green);
+  opacity: 0; margin-top: 0.15rem;
+  transition: opacity 0.4s ease;
+}
+
+.bw.bw-dissolved {
+  background: var(--greenbg); border-color: var(--greenb);
+}
+.bw.bw-dissolved .bw-dot { background: var(--green); }
+.bw.bw-dissolved .bw-label {
+  text-decoration: line-through; color: var(--ink3);
+}
+.bw.bw-dissolved .bw-check {
+  opacity: 1; transform: scale(1);
+}
+.bw.bw-dissolved .bw-solution { opacity: 1; }
+.bw.bw-active {
+  transform: scale(1.03);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.bw.bw-dim { opacity: 0.35; }
+
+.barrier-summary {
+  text-align: center; padding: 1.25rem;
+  background: var(--greenbg); border: 1.5px solid var(--greenb);
+  border-radius: 10px;
+  opacity: 0; transform: translateY(8px);
+  transition: all 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.barrier-summary.show {
+  opacity: 1; transform: none;
+}
+.barrier-summary span {
+  font-size: 0.85rem; font-weight: 700; color: var(--green);
+}
+
+/* ── Barrier step cards ── */
+.step-card-wide { max-width: 420px; }
+.b-quote {
+  font-size: 0.92rem; font-style: italic; color: var(--ink2);
+  margin: 0.5rem 0 1rem; line-height: 1.5;
+}
+.b-fix-lbl {
+  font-size: 0.55rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--green); margin-bottom: 0.4rem;
+}
+.b-fix-list {
+  list-style: none; margin: 0; padding: 0;
+  font-size: 0.78rem; color: var(--ink2); line-height: 1.5;
+}
+.b-fix-list li {
+  padding: 0.3rem 0; display: flex; gap: 0.4rem;
+  border-top: 1px solid var(--rule);
+}
+.b-fix-list li:first-child { border-top: none; }
+.b-fix-list li::before {
+  content: '\2192'; color: var(--green); font-weight: 600;
+  flex-shrink: 0;
+}
+.b-fix-list strong { color: var(--ink); }
+
+/* ── Unlock callout ── */
+.unlock {
+  max-width: 680px; margin: 0 auto; padding: 3rem 2.5rem;
+  background: var(--white);
+  border-left: 4px solid var(--green);
+  border-radius: 2px 16px 16px 2px;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.04);
+}
+.unlock-eye {
+  font-size: 0.58rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.15em; color: var(--green); margin-bottom: 0.75rem;
+}
+.unlock h3 {
+  font-size: 1.5rem; font-weight: 800; letter-spacing: -0.025em;
+  margin-bottom: 1rem;
+}
+.unlock-items {
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.unlock-item {
+  display: flex; align-items: flex-start; gap: 0.6rem;
+  font-size: 0.85rem; color: var(--ink2); line-height: 1.5;
+}
+.unlock-item strong { color: var(--ink); }
+.unlock-item::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); flex-shrink: 0; margin-top: 0.45rem;
+}
+
+/* ── Two-track strategy ── */
+.track-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.5rem; max-width: 800px; margin: 0 auto;
+}
+.track-card {
+  border-radius: 12px; padding: 1.75rem;
+}
+.track-card.dissolve {
+  background: var(--greenbg); border: 1px solid var(--greenb);
+}
+.track-card.escalate {
+  background: var(--white); border: 1px solid var(--rule);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.track-tag {
+  font-size: 0.58rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.12em; margin-bottom: 0.5rem;
+}
+.dissolve .track-tag { color: var(--green); }
+.escalate .track-tag { color: var(--ink3); }
+.track-title {
+  font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;
+}
+.track-list {
+  list-style: none; margin: 0; padding: 0;
+}
+.track-list li {
+  padding: 0.45rem 0; font-size: 0.82rem; color: var(--ink2);
+  border-top: 1px solid rgba(0,0,0,0.06);
+  display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.45;
+}
+.track-list li:first-child { border-top: none; }
+.track-list strong { color: var(--ink); }
+.track-list .lp { margin-right: 0.2rem; }
+
+.track-connector {
+  text-align: center; padding: 2rem;
+  font-size: 0.92rem; color: var(--ink2); line-height: 1.6;
+  max-width: 560px; margin: 0 auto;
+}
+.track-connector strong { color: var(--ink); }
+
+/* ── Timeline ── */
+.tl-bar {
+  display: flex; margin: 2rem 0;
+  background: var(--white); border-radius: 12px;
+  overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.tl-phase {
+  flex: 1; padding: 1.25rem 1rem; text-align: center; position: relative;
+}
+.tl-phase:not(:last-child) { border-right: 1px solid var(--rule); }
+.tl-date {
+  font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--ink3); margin-bottom: 0.35rem;
+}
+.tl-name { font-size: 0.82rem; font-weight: 700; margin-bottom: 0.15rem; }
+.tl-sub { font-size: 0.65rem; color: var(--ink3); }
+.tl-progress {
+  position: absolute; bottom: 0; left: 0; height: 3px;
+  transition: width 1s cubic-bezier(0.16,1,0.3,1); width: 0;
+}
+.tl-phase:nth-child(1) .tl-progress { background: var(--green); }
+.tl-phase:nth-child(2) .tl-progress { background: var(--blue); }
+.tl-phase:nth-child(3) .tl-progress { background: #d97706; }
+.tl-phase:nth-child(4) .tl-progress { background: var(--ink); }
+.tl-phase.active .tl-progress { width: 100%; }
+
+/* ── Closing ── */
+.closing {
+  text-align: center; padding: 7rem 2rem;
+  border-top: 1px solid var(--rule);
+}
+.closing h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.6rem;
+}
+.closing p {
+  font-size: 1rem; color: var(--ink2);
+  max-width: 460px; margin: 0 auto; line-height: 1.6;
+}
+
+footer {
+  text-align: center; padding: 1.25rem;
+  font-size: 0.7rem; color: var(--ink3);
+  border-top: 1px solid var(--rule);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .scrolly { flex-direction: column; }
+  .scrolly-viz { position: relative; top: 0; width: 100%; height: 50vh; }
+  .scrolly-text { width: 100%; padding: 2rem 0; }
+  .step { min-height: 50vh; }
+  .hero { padding: 2rem; }
+  .hero-nums { gap: 2rem; }
+  .classify-grid, .track-grid { grid-template-columns: 1fr; }
+  .tl-bar { flex-direction: column; }
+  .tl-phase:not(:last-child) { border-right: none; border-bottom: 1px solid var(--rule); }
+}
+</style>
+</head>
+<body>
+
+<!-- ════ HERO ════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <h1 class="fi">You Can't Push People Through a Door They're Afraid Of.</h1>
+    <p class="hero-sub fi fi-d1">75K eligible merchants won't adopt Wix Checking through escalation alone. The gap to 20K requires dissolving the barriers that make them say no.</p>
+    <div class="hero-nums fi fi-d2">
+      <div>
+        <div class="hero-num-val">75K</div>
+        <div class="hero-num-lbl">Eligible merchants</div>
+      </div>
+      <div>
+        <div class="hero-num-val">1.7K</div>
+        <div class="hero-num-lbl">Converted today</div>
+      </div>
+      <div>
+        <div class="hero-num-val" style="color:var(--red)">2.3<small>%</small></div>
+        <div class="hero-num-lbl">Conversion rate</div>
+      </div>
+      <div>
+        <div class="hero-num-val">4</div>
+        <div class="hero-num-lbl">Barriers to dissolve</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint fi fi-d3" style="position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:4px; animation: scrollBounce 2s ease-in-out infinite; opacity:0.5;">
+      <span style="font-size:11px; font-weight:500; color:var(--ink3); letter-spacing:0.5px; text-transform:uppercase;">Scroll</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- ════ FUNNEL SCROLLYTELLING ════ -->
+<div class="scrolly" id="scrolly-main">
+  <div class="scrolly-viz">
+    <div class="wf" id="wf">
+      <div class="wf-row" data-w="100">
+        <div class="wf-lbl">Eligible Users</div>
+        <div class="wf-track"><div class="wf-bar"></div></div>
+        <div class="wf-val">75K</div>
+      </div>
+      <div class="wf-gap" data-l="1">
+        <div class="wf-gap-line"></div>
+        <div class="wf-gap-pct">-39%</div>
+        <div class="wf-gap-lever"><span class="lp lp-1">Drop 1</span></div>
+      </div>
+      <div class="wf-row" data-w="62">
+        <div class="wf-lbl">Exposed</div>
+        <div class="wf-track"><div class="wf-bar"></div></div>
+        <div class="wf-val">46K <span style="font-weight:400; opacity:0.55; font-size:0.7em;">(61%)</span></div>
+      </div>
+      <div class="wf-gap" data-l="2">
+        <div class="wf-gap-line"></div>
+        <div class="wf-gap-pct">-72%</div>
+        <div class="wf-gap-lever"><span class="lp lp-2">Drop 2</span></div>
+      </div>
+      <div class="wf-row" data-w="28">
+        <div class="wf-lbl">Welcome Screen</div>
+        <div class="wf-track"><div class="wf-bar"></div></div>
+        <div class="wf-val">13K <span style="font-weight:400; opacity:0.55; font-size:0.7em;">(17%)</span></div>
+      </div>
+      <div class="wf-gap" data-l="3">
+        <div class="wf-gap-line"></div>
+        <div class="wf-gap-pct">-77%</div>
+        <div class="wf-gap-lever"><span class="lp lp-3">Drop 3</span></div>
+      </div>
+      <div class="wf-row" data-w="14">
+        <div class="wf-lbl">Click Open Account</div>
+        <div class="wf-track"><div class="wf-bar"></div></div>
+        <div class="wf-val">3K <span style="font-weight:400; opacity:0.55; font-size:0.7em;">(4%)</span></div>
+      </div>
+      <div class="wf-gap" data-l="4">
+        <div class="wf-gap-line"></div>
+        <div class="wf-gap-pct">-44%</div>
+        <div class="wf-gap-lever"><span class="lp lp-4">Drop 4</span></div>
+      </div>
+      <div class="wf-row" data-w="10">
+        <div class="wf-lbl">Account Created</div>
+        <div class="wf-track"><div class="wf-bar"></div></div>
+        <div class="wf-val">1.7K <span style="font-weight:400; opacity:0.55; font-size:0.7em;">(2.3%)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scrolly-text">
+    <div class="step" data-state="overview">
+      <div class="step-intro">
+        <strong>Where We Lose Them</strong>
+        <p>75K eligible merchants. 1.7K converted. Four drops carve away 97.7% of the opportunity. Each drop has a different root cause.</p>
+      </div>
+    </div>
+
+    <div class="step" data-state="lever1">
+      <div class="step-card">
+        <span class="lp lp-1">Drop 1 - Exposure</span>
+        <div class="step-stat" style="color:var(--l1)">39%</div>
+        <h3>Never see the option</h3>
+        <p>29K eligible merchants aren't exposed to Wix Checking at all. A visibility problem — solvable with placement.</p>
+        <p style="margin-top:0.75rem; font-size:0.75rem; color:var(--ink3);"><strong style="color:var(--ink);">Type:</strong> Friction</p>
+      </div>
+    </div>
+
+    <div class="step" data-state="lever2">
+      <div class="step-card">
+        <span class="lp lp-2">Drop 2 - Engagement</span>
+        <div class="step-stat" style="color:var(--l2)">72%</div>
+        <h3>See it, don't engage</h3>
+        <p>Of those exposed, 72% never click. They read "checking account" and decide it's not for them. This is fear, not friction.</p>
+        <p style="margin-top:0.75rem; font-size:0.75rem; color:var(--red);"><strong>Type:</strong> Fear</p>
+      </div>
+    </div>
+
+    <div class="step" data-state="lever3">
+      <div class="step-card">
+        <span class="lp lp-3">Drop 3 - Completion</span>
+        <div class="step-stat" style="color:var(--l3)">77%</div>
+        <h3>Click, don't complete</h3>
+        <p>They were interested enough to click, but the multi-step process with bank account creation and debit card triggers commitment anxiety.</p>
+        <p style="margin-top:0.75rem; font-size:0.75rem; color:var(--red);"><strong>Type:</strong> Fear</p>
+      </div>
+    </div>
+
+    <div class="step" data-state="lever4">
+      <div class="step-card">
+        <span class="lp lp-4">Drop 4 - Execution</span>
+        <div class="step-stat" style="color:var(--l4)">44%</div>
+        <h3>Start, don't finish</h3>
+        <p>44% drop at the final verification step. Too many screens, too much process. A UX problem — solvable with one-click.</p>
+        <p style="margin-top:0.75rem; font-size:0.75rem; color:var(--ink3);"><strong style="color:var(--ink);">Type:</strong> Friction</p>
+      </div>
+    </div>
+
+    <div class="step" data-state="summary">
+      <div class="step-card">
+        <h3>Two friction drops.<br>Two fear drops.</h3>
+        <p>Friction we can fix with better UX. Fear requires changing what the product <em>is</em> — not how we present it.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ CLASSIFICATION ════ -->
+<section class="sect">
+  <div class="ch fi">01 - The Honest Math</div>
+  <div class="sect-title fi fi-d1">Two Types of Problems</div>
+  <div class="sect-sub fi fi-d2">Escalation handles friction beautifully. But the ceiling without dissolving fear is ~10-15K — not 20K.</div>
+
+  <div class="classify-grid fi fi-d3">
+    <div class="classify-card friction">
+      <div class="classify-tag">Friction</div>
+      <div class="classify-title">Solvable with better UX</div>
+      <div class="classify-item"><span class="lp lp-1">Drop 1</span> 39% never see the option</div>
+      <div class="classify-item"><span class="lp lp-4">Drop 4</span> 44% drop at execution</div>
+      <div class="classify-impact">Gets us to ~10-15K with escalation</div>
+    </div>
+    <div class="classify-card fear">
+      <div class="classify-tag">Fear</div>
+      <div class="classify-title">Requires product change</div>
+      <div class="classify-item"><span class="lp lp-2">Drop 2</span> 72% don't engage</div>
+      <div class="classify-item"><span class="lp lp-3">Drop 3</span> 77% don't complete</div>
+      <div class="classify-impact">The gap between 15K and 20K</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ PIVOT ════ -->
+<div class="pivot fi">
+  <div class="pivot-eye">The Shift</div>
+  <h2>Stop pushing harder.<br>Change what's behind the door.</h2>
+  <p>Four psychological barriers stand between 1.7K and 20K. Each one has a concrete product answer.</p>
+</div>
+
+<!-- ════ BARRIER SCROLLYTELLING ════ -->
+<section class="sect" style="padding-bottom: 0;">
+  <div class="ch fi" style="text-align:center;">02 - Dissolving the Barriers</div>
+  <div class="sect-title fi fi-d1" style="text-align:center; margin-left:auto; margin-right:auto;">Four Barriers. Four Product Answers.</div>
+  <div class="sect-sub fi fi-d2" style="text-align:center; margin-left:auto; margin-right:auto;">Each barrier is rational. Each one has a path through it.</div>
+</section>
+
+<div class="scrolly" id="scrolly-barriers">
+  <div class="scrolly-viz">
+    <div>
+      <div class="viz-label" style="font-size:0.58rem; font-weight:700; text-transform:uppercase; letter-spacing:0.15em; color:var(--ink3); margin-bottom:1.25rem; text-align:center;">Barriers to Adoption</div>
+      <div class="barrier-stack" id="barrier-viz">
+        <div class="bw bw-1" data-b="1">
+          <div class="bw-dot"></div>
+          <div class="bw-content">
+            <div class="bw-label">"It's a Bank Account"</div>
+            <div class="bw-sub">Banking anxiety</div>
+            <div class="bw-solution">Wix Balance rebrand</div>
+          </div>
+          <svg class="bw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="bw bw-2" data-b="2">
+          <div class="bw-dot"></div>
+          <div class="bw-content">
+            <div class="bw-label">"My Money Gets Stuck"</div>
+            <div class="bw-sub">Cash flow fear</div>
+            <div class="bw-solution">Auto-payout default</div>
+          </div>
+          <svg class="bw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="bw bw-3" data-b="3">
+          <div class="bw-dot"></div>
+          <div class="bw-content">
+            <div class="bw-label">"I Don't Want a Debit Card"</div>
+            <div class="bw-sub">Commitment anxiety</div>
+            <div class="bw-solution">Virtual-only default</div>
+          </div>
+          <svg class="bw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="bw bw-4" data-b="4">
+          <div class="bw-dot"></div>
+          <div class="bw-content">
+            <div class="bw-label">"My Setup Works Fine"</div>
+            <div class="bw-sub">Familiarity bias</div>
+            <div class="bw-solution">Risk-free trial + default change</div>
+          </div>
+          <svg class="bw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="barrier-summary" id="barrier-summary">
+          <span>All barriers dissolved. Path to 20K: clear.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scrolly-text">
+    <!-- Overview -->
+    <div class="step" data-barrier="0">
+      <div class="step-intro">
+        <strong>Four walls between us and 20K.</strong>
+        <p>Each barrier is a rational response from merchants. We can't argue them away — we need to dissolve them with product changes.</p>
+      </div>
+    </div>
+
+    <!-- Barrier 1 -->
+    <div class="step" data-barrier="1">
+      <div class="step-card step-card-wide" style="border-left: 3px solid var(--l1);">
+        <span class="lp lp-1">Barrier 1</span>
+        <h3>"It's a Bank Account"</h3>
+        <div class="b-quote">Merchants hear "checking account" and think bank. They don't want another bank — they want to get paid.</div>
+        <div class="b-fix-lbl">The Fix</div>
+        <ul class="b-fix-list">
+          <li><strong>Rebrand to "Wix Balance"</strong> — drop the banking language entirely. A/B test naming impact on conversion.</li>
+          <li><strong>Shadow mode</strong> — let merchants preview their balance dashboard without opening an account. Build desire before commitment. <span class="lp lp-blue" style="font-size:0.5rem;">In development</span></li>
+          <li><strong>Reframe as a payout wallet</strong> — not a financial product, just a better way to get paid.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Barrier 2 -->
+    <div class="step" data-barrier="2">
+      <div class="step-card step-card-wide" style="border-left: 3px solid var(--l2);">
+        <span class="lp lp-2">Barrier 2</span>
+        <h3>"My Money Gets Stuck"</h3>
+        <div class="b-quote">The #1 rational objection. Merchants fear losing control of their cash flow if money enters a Wix account.</div>
+        <div class="b-fix-lbl">The Fix</div>
+        <ul class="b-fix-list">
+          <li><strong>Auto-payout to external bank by default.</strong> Money flows through — arrives in Wix Balance, transfers out automatically.</li>
+          <li><strong>Same-day payouts</strong> — merchants get paid faster (vs. 2-3 day for external). The carrot they didn't know they wanted.</li>
+          <li><strong>Transparent controls</strong> — clear dashboard showing every money movement. No surprises, no lock-in.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Barrier 3 -->
+    <div class="step" data-barrier="3">
+      <div class="step-card step-card-wide" style="border-left: 3px solid var(--l3);">
+        <span class="lp lp-3">Barrier 3</span>
+        <h3>"I Don't Want a Debit Card"</h3>
+        <div class="b-quote">The debit card feels like a commitment to a new financial product. It signals permanence.</div>
+        <div class="b-fix-lbl">The Fix</div>
+        <ul class="b-fix-list">
+          <li><strong>Virtual-only by default</strong> — no physical card unless the merchant requests one.</li>
+          <li><strong>De-emphasize the card</strong> — position it as a bonus feature, not a core requirement of Wix Balance.</li>
+          <li><strong>One-click activation</strong> — remove the multi-step ceremony. Account opens in one tap, card is optional.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Barrier 4 -->
+    <div class="step" data-barrier="4">
+      <div class="step-card step-card-wide" style="border-left: 3px solid var(--l4);">
+        <span class="lp lp-4">Barrier 4</span>
+        <h3>"My Setup Works Fine"</h3>
+        <div class="b-quote">This isn't a product problem — it's inertia. And inertia only breaks with a forcing function.</div>
+        <div class="b-fix-lbl">The Fix</div>
+        <ul class="b-fix-list">
+          <li><strong>30-day risk-free trial</strong> — "Try Wix Balance. Not for you? Switch back in one click." Removes the permanence fear.</li>
+          <li><strong>Same-day payout incentive</strong> — make the benefit tangible and immediate. Speed sells.</li>
+          <li><strong>Change the default</strong> — once barriers 1-3 are solved, the default switch becomes nearly invisible. Auto-payout means merchants barely notice.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="step" data-barrier="5">
+      <div class="step-card step-card-wide" style="border-left: 3px solid var(--green);">
+        <span class="lp lp-green">All Barriers</span>
+        <h3>Dissolve the fear.<br>Then change the default.</h3>
+        <p>When it's not called "checking," money auto-flows out, there's no card commitment, and there's a risk-free trial — changing the default isn't a controversial leap. It's barely noticeable.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ THE UNLOCK ════ -->
+<section class="sect">
+  <div class="unlock fi">
+    <div class="unlock-eye">The Key Unlock</div>
+    <h3>Auto-payout is the skeleton key.</h3>
+    <div class="unlock-items">
+      <div class="unlock-item"><strong>Solves Barrier 2 directly</strong> — merchants' money flows to their bank automatically. No lock-in.</div>
+      <div class="unlock-item"><strong>Makes the default change safe</strong> — if money auto-flows out, switching merchants to Wix Balance is invisible. Stage 4 becomes a non-event.</div>
+      <div class="unlock-item"><strong>Gives management confidence</strong> — "We're not trapping anyone's money. We're giving them faster payouts with an automatic bridge to their bank."</div>
+      <div class="unlock-item"><strong>Preserves the business value</strong> — Wix still holds daily balances. Merchants still get same-day speed. Everyone wins.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ TWO-TRACK STRATEGY ════ -->
+<section class="sect" style="text-align:center;">
+  <div class="ch fi">03 - The Combined Strategy</div>
+  <div class="sect-title fi fi-d1" style="margin-left:auto; margin-right:auto;">Two Tracks. One Goal.</div>
+  <div class="sect-sub fi fi-d2" style="margin-left:auto; margin-right:auto; text-align:center;">Dissolving barriers increases conversion rate. Escalation increases volume. Together: multiplicative.</div>
+
+  <div class="track-grid fi fi-d3">
+    <div class="track-card dissolve">
+      <div class="track-tag">Track A: Dissolve</div>
+      <div class="track-title">Change What's Behind the Door</div>
+      <ul class="track-list">
+        <li><strong>Wix Balance rebrand</strong> — A/B test naming across all touchpoints</li>
+        <li><strong>Auto-payout default</strong> — money flows to external bank automatically</li>
+        <li><strong>Shadow / demo mode</strong> — preview balance without commitment</li>
+        <li><strong>Virtual card default</strong> — debit card is a bonus, not a requirement</li>
+        <li><strong>30-day risk-free trial</strong> — "Not for you? Switch back in one click"</li>
+        <li><strong>Same-day payout emphasis</strong> — the tangible carrot merchants actually feel</li>
+      </ul>
+    </div>
+    <div class="track-card escalate">
+      <div class="track-tag">Track B: Escalate</div>
+      <div class="track-title">Drive Adoption at Scale</div>
+      <ul class="track-list">
+        <li><span class="lp lp-blue">Continuous</span> <strong>Stage 0</strong> — ongoing optimization, value prop, demo mode</li>
+        <li><span class="lp lp-4">April</span> <strong>Stage 1</strong> — one-click onboarding, remove wizard friction</li>
+        <li><span class="lp lp-4">April</span> <strong>Stage 2</strong> — active choice modal, force a decision</li>
+        <li><span class="lp lp-3">June</span> <strong>Stage 3</strong> — pending payouts, escalate for holdouts</li>
+        <li><span class="lp lp-green">When safe</span> <strong>Stage 4</strong> — default change <em>(unlocked by Track A)</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="track-connector fi fi-d4">
+    <strong>Track A makes Track B safe.</strong> Without dissolved barriers, Stage 4 is a fight. With them, it's a formality. Auto-payout is the bridge between "controversial" and "obvious."
+  </div>
+</section>
+
+<!-- ════ TIMELINE ════ -->
+<section class="sect" style="text-align:center">
+  <div class="ch fi">04 - Delivery</div>
+  <div class="sect-title fi fi-d1" style="margin-left:auto; margin-right:auto">Parallel Execution</div>
+  <div class="sect-sub fi fi-d2" style="margin-left:auto; margin-right:auto; text-align:center;">Both tracks run simultaneously. Barrier solutions compound with each escalation stage.</div>
+
+  <div class="tl-bar fi fi-d3" id="tl">
+    <div class="tl-phase">
+      <div class="tl-date">April</div>
+      <div class="tl-name">Rebrand + One-Click</div>
+      <div class="tl-sub">Balance naming A/B + Stage 1-2</div>
+      <div class="tl-progress"></div>
+    </div>
+    <div class="tl-phase">
+      <div class="tl-date">May - June</div>
+      <div class="tl-name">Auto-Payout + Escalation</div>
+      <div class="tl-sub">Auto-payout default + Stage 3</div>
+      <div class="tl-progress"></div>
+    </div>
+    <div class="tl-phase">
+      <div class="tl-date">July - Aug</div>
+      <div class="tl-name">Trial + Measure</div>
+      <div class="tl-sub">30-day trial + barrier impact</div>
+      <div class="tl-progress"></div>
+    </div>
+    <div class="tl-phase">
+      <div class="tl-date">Q4</div>
+      <div class="tl-name">Default Change</div>
+      <div class="tl-sub">Stage 4 — safe and defensible</div>
+      <div class="tl-progress"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ GROWTH PROJECTION ════ -->
+<section class="sect fi" style="padding-bottom: 3rem;">
+  <div class="ch fi" style="text-align:center;">Projected Impact</div>
+  <div class="sect-title fi fi-d1" style="text-align:center; margin-left:auto; margin-right:auto;">Month-over-Month Growth to 20K</div>
+  <div class="sect-sub fi fi-d2" style="text-align:center; max-width:560px; margin-left:auto; margin-right:auto;">Barrier solutions compound with escalation. Early months build the foundation; later months reap the multiplicative effect.</div>
+
+  <div class="fi fi-d3" style="background:var(--white); border-radius:12px; box-shadow:0 1px 4px rgba(0,0,0,0.06); padding:2rem 2rem 1.5rem; margin-top:1.5rem; max-width:780px; margin-left:auto; margin-right:auto;">
+    <div style="display:flex; align-items:flex-end; gap:6px; height:260px;">
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:11px; font-weight:700; color:var(--ink);">1.7K</span>
+        <div style="width:100%; background:var(--ink4); border-radius:4px 4px 0 0; height:22px;"></div>
+        <span style="font-size:10px; color:var(--ink3);">Mar</span>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:11px; font-weight:700; color:var(--green);">2.4K</span>
+        <div style="width:100%; background:var(--green); opacity:0.5; border-radius:4px 4px 0 0; height:31px;"></div>
+        <span style="font-size:10px; color:var(--ink3);">Apr</span>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:11px; font-weight:700; color:var(--green);">3.8K</span>
+        <div style="width:100%; background:var(--green); opacity:0.55; border-radius:4px 4px 0 0; height:49px;"></div>
+        <span style="font-size:10px; color:var(--ink3);">May</span>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:11px; font-weight:700; color:var(--blue);">5.5K</span>
+        <div style="width:100%; background:var(--blue); opacity:0.55; border-radius:4px 4px 0 0; height:72px;"></div>
+        <span style="font-size:10px; color:var(--ink3);">Jun</span>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:11px; font-weight:700; color:var(--blue);">8.0K</span>
+        <div style="width:100%; background:var(--blue); opacity:0.6; border-radius:4px 4px 0 0; height:104px;"></div>
+        <span style="font-size:10px; color:var(--ink3);">Jul</span>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:11px; font-weight:700; color:var(--blue);">10.5K</span>
+        <div style="width:100%; background:var(--blue); opacity:0.65; border-radius:4px 4px 0 0; height:137px;"></div>
+        <span style="font-size:10px; color:var(--ink3);">Aug</span>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:11px; font-weight:700; color:var(--l2);">13.0K</span>
+        <div style="width:100%; background:var(--l2); opacity:0.55; border-radius:4px 4px 0 0; height:169px;"></div>
+        <span style="font-size:10px; color:var(--ink3);">Sep</span>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:11px; font-weight:700; color:var(--l2);">15.5K</span>
+        <div style="width:100%; background:var(--l2); opacity:0.6; border-radius:4px 4px 0 0; height:202px;"></div>
+        <span style="font-size:10px; color:var(--ink3);">Oct</span>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:11px; font-weight:700; color:var(--l2);">18.0K</span>
+        <div style="width:100%; background:var(--l2); opacity:0.65; border-radius:4px 4px 0 0; height:234px;"></div>
+        <span style="font-size:10px; color:var(--ink3);">Nov</span>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:11px; font-weight:800; color:var(--ink);">20K</span>
+        <div style="width:100%; background:var(--ink); border-radius:4px 4px 0 0; height:260px;"></div>
+        <span style="font-size:10px; font-weight:700; color:var(--ink);">Dec</span>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--rule); margin-top:0.5rem; padding-top:1rem; display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap; font-size:11px; color:var(--ink3);">
+      <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:var(--green); opacity:0.55;"></span> Rebrand + One-click (barrier dissolve)</span>
+      <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:var(--blue); opacity:0.6;"></span> Auto-payout + Escalation</span>
+      <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:var(--l2); opacity:0.6;"></span> Default change (barriers dissolved)</span>
+    </div>
+    <p style="font-size:12px; color:var(--ink3); text-align:center; margin-top:1rem; font-style:italic;">The S-curve reflects barrier dissolution compounding with escalation. The sharp inflection in Q3-Q4 is when auto-payout makes Stage 4 safe to deploy.</p>
+  </div>
+</section>
+
+<!-- ════ CLOSING ════ -->
+<div class="closing fi">
+  <h2>From 1.7K to 20K.<br>Not by pushing harder.</h2>
+  <p>By changing what's behind the door — then opening it for everyone.</p>
+</div>
+
+<footer>Wix Checking — Barrier Strategy 2025</footer>
+
+<script>
+/* ── Fade-in observer ── */
+const fiObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fi').forEach(el => fiObs.observe(el));
+
+/* ── Scroll-hint fade-out ── */
+const scrollHint = document.querySelector('.scroll-hint');
+if (scrollHint) {
+  let hintHidden = false;
+  window.addEventListener('scroll', () => {
+    if (!hintHidden && window.scrollY > 80) {
+      scrollHint.style.transition = 'opacity 0.6s ease';
+      scrollHint.style.opacity = '0';
+      hintHidden = true;
+    }
+  }, { passive: true });
+}
+
+/* ── Funnel Scrollytelling ── */
+const steps = document.querySelectorAll('#scrolly-main .step');
+const wfRows = document.querySelectorAll('#wf .wf-row');
+const wfGaps = document.querySelectorAll('#wf .wf-gap');
+const leverColors = { 1: 'var(--l1)', 2: 'var(--l2)', 3: 'var(--l3)', 4: 'var(--l4)' };
+const stateMap = [];
+steps.forEach(s => stateMap.push(s.dataset.state));
+let currentState = null;
+
+function setFunnelState(state) {
+  if (state === currentState) return;
+  currentState = state;
+
+  wfRows.forEach(r => {
+    r.style.opacity = '0';
+    r.querySelector('.wf-bar').style.width = '0';
+    r.querySelector('.wf-bar').style.background = '#c8c6c0';
+  });
+  wfGaps.forEach(g => {
+    g.className = 'wf-gap';
+    g.querySelector('.wf-gap-line').style.background = 'var(--ink4)';
+    g.querySelector('.wf-gap-pct').style.color = 'var(--ink3)';
+  });
+
+  if (state === 'overview') return;
+
+  if (state.startsWith('lever')) {
+    const n = parseInt(state[5]);
+    const color = leverColors[n];
+    wfRows.forEach((r, i) => {
+      if (i <= n) {
+        r.style.opacity = i === n - 1 || i === n ? '1' : '0.5';
+        r.querySelector('.wf-bar').style.width = r.dataset.w + '%';
+        r.querySelector('.wf-bar').style.background =
+          i === n - 1 || i === n ? color : '#c8c6c0';
+      }
+    });
+    wfGaps.forEach((g, i) => {
+      if (i + 1 === n) {
+        g.classList.add('show');
+        g.querySelector('.wf-gap-line').style.background = color;
+        g.querySelector('.wf-gap-pct').style.color = color;
+      } else if (i + 1 < n) {
+        g.classList.add('show', 'dim');
+      }
+    });
+  }
+
+  if (state === 'summary') {
+    wfRows.forEach((r, i) => {
+      r.style.opacity = '1';
+      r.querySelector('.wf-bar').style.width = r.dataset.w + '%';
+      const c = i < 4 ? leverColors[i + 1] : 'var(--green)';
+      r.querySelector('.wf-bar').style.background = c;
+    });
+    wfGaps.forEach((g, i) => {
+      g.classList.add('show');
+      const c = leverColors[i + 1];
+      g.querySelector('.wf-gap-line').style.background = c;
+      g.querySelector('.wf-gap-pct').style.color = c;
+    });
+  }
+}
+
+function onFunnelScroll() {
+  const center = window.innerHeight / 2;
+  let activeIdx = 0;
+  steps.forEach((s, i) => {
+    if (s.getBoundingClientRect().top < center) activeIdx = i;
+  });
+  steps.forEach((s, i) => s.classList.toggle('active', i === activeIdx));
+  setFunnelState(stateMap[activeIdx]);
+}
+window.addEventListener('scroll', onFunnelScroll, { passive: true });
+onFunnelScroll();
+
+/* ── Barrier Scrollytelling ── */
+const bSteps = document.querySelectorAll('#scrolly-barriers .step');
+const walls = document.querySelectorAll('#barrier-viz .bw');
+const barrierSummary = document.getElementById('barrier-summary');
+let currentBarrierKey = null;
+
+function setBarrierState(activeIdx) {
+  if (activeIdx === currentBarrierKey) return;
+  currentBarrierKey = activeIdx;
+
+  if (activeIdx === 0) {
+    walls.forEach(w => {
+      w.classList.remove('bw-active', 'bw-dissolved', 'bw-dim');
+    });
+    barrierSummary.classList.remove('show');
+    return;
+  }
+
+  walls.forEach((w, i) => {
+    w.classList.remove('bw-active', 'bw-dissolved', 'bw-dim');
+    if (activeIdx >= 5) {
+      w.classList.add('bw-dissolved');
+    } else if (i < activeIdx - 1) {
+      w.classList.add('bw-dissolved');
+    } else if (i === activeIdx - 1) {
+      w.classList.add('bw-dissolved', 'bw-active');
+    } else {
+      w.classList.add('bw-dim');
+    }
+  });
+
+  barrierSummary.classList.toggle('show', activeIdx >= 5);
+}
+
+function onBarrierScroll() {
+  const scrolly = document.getElementById('scrolly-barriers');
+  const rect = scrolly.getBoundingClientRect();
+  if (rect.top > window.innerHeight || rect.bottom < 0) return;
+
+  const center = window.innerHeight / 2;
+  let activeIdx = 0;
+  bSteps.forEach((s, i) => {
+    if (s.getBoundingClientRect().top < center) activeIdx = i;
+  });
+  bSteps.forEach((s, i) => s.classList.toggle('active', i === activeIdx));
+  const barrierIdx = parseInt(bSteps[activeIdx].dataset.barrier);
+  setBarrierState(barrierIdx);
+}
+window.addEventListener('scroll', onBarrierScroll, { passive: true });
+
+/* ── Timeline animation ── */
+const tlObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.tl-phase').forEach((p, i) => {
+        setTimeout(() => p.classList.add('active'), i * 300);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.tl-bar').forEach(el => tlObs.observe(el));
+</script>
+
+</body>
+</html>
