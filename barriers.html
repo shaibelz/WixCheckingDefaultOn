@@ -30,7 +30,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .fi.vis{opacity:1;transform:none}
 .fi-d1{transition-delay:.08s}.fi-d2{transition-delay:.16s}.fi-d3{transition-delay:.24s}
 
-/* ══════ HERO ══════ */
 .hero{min-height:100vh;display:flex;align-items:center;padding:4rem;max-width:1100px;margin:0 auto;position:relative}
 @keyframes scrollBounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
 .hero-inner{max-width:680px}
@@ -41,13 +40,11 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .hero-num-val small{font-size:.5em;font-weight:500;color:var(--ink3)}
 .hero-num-lbl{font-size:.7rem;color:var(--ink3);font-weight:500;margin-top:.1rem}
 
-/* ══════ SCROLLYTELLING ══════ */
 .scrolly{position:relative;display:flex;max-width:1200px;margin:0 auto;padding:0 2rem}
 .scrolly-viz{position:sticky;top:10vh;width:55%;height:80vh;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.scrolly-text{width:45%;padding:40vh 0 20vh 2rem}
-
+.scrolly-text{width:45%;padding:40vh 0 40vh 2rem}
 .step{min-height:75vh;display:flex;align-items:center}
-.step-card{background:rgba(255,255,255,.96);border-radius:14px;padding:1.75rem 2rem;box-shadow:0 2px 24px rgba(0,0,0,.04);max-width:400px;opacity:.15;transform:translateY(12px);transition:all .5s cubic-bezier(.16,1,.3,1)}
+.step-card{background:rgba(255,255,255,.96);border-radius:14px;padding:1.75rem 2rem;box-shadow:0 2px 24px rgba(0,0,0,.04);max-width:390px;opacity:.15;transform:translateY(12px);transition:all .5s cubic-bezier(.16,1,.3,1)}
 .step.active .step-card{opacity:1;transform:none}
 .step-intro{max-width:380px;opacity:.15;transform:translateY(12px);transition:all .5s cubic-bezier(.16,1,.3,1)}
 .step.active .step-intro{opacity:1;transform:none}
@@ -57,19 +54,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .step-card p{font-size:.8rem;color:var(--ink2);line-height:1.55}
 .step-card .lp{margin-bottom:.4rem}
 .step-stat{font-size:2.6rem;font-weight:800;letter-spacing:-.03em;line-height:1;margin:.15rem 0 .4rem}
+.step-card-wide{max-width:420px}
 
-/* ── Expanding phase steps ── */
-.step-phase{align-items:flex-start;padding-top:30vh}
-.step-phase .step-card{position:sticky;top:15vh}
-
-/* Progressive reveal */
-.pc-solve{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .6s cubic-bezier(.16,1,.3,1),opacity .4s ease,margin-top .4s ease;margin-top:0}
-.pc-solve.show{grid-template-rows:1fr;opacity:1;margin-top:.75rem}
-.pc-solve-inner{overflow:hidden}
-
-.pc-solve-lbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;padding-top:.6rem;border-top:1px solid var(--rule);margin-bottom:.3rem}
-.pc-sub-lbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin-bottom:.25rem}
-
+.b-fix-lbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.4rem;padding-top:.6rem;border-top:1px solid var(--rule)}
 .b-fix-list{list-style:none;margin:0;padding:0;font-size:.76rem;color:var(--ink2);line-height:1.45}
 .b-fix-list li{padding:.25rem 0;display:flex;gap:.35rem;border-top:1px solid var(--rule)}
 .b-fix-list li:first-child{border-top:none}
@@ -81,7 +68,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .pc-fear-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:.35rem}
 .pc-fear strong{color:var(--ink)}
 
-/* ── Funnel ── */
 .wf{width:100%;max-width:500px}
 .wf-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.2rem;transition:opacity .5s ease}
 .wf-lbl{width:135px;text-align:right;flex-shrink:0;font-size:.76rem;font-weight:500;color:var(--ink3)}
@@ -95,24 +81,21 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .wf-gap-lever{opacity:0;transition:opacity .3s ease}
 .wf-gap.show .wf-gap-lever{opacity:1}
 
-/* ══════ SECTIONS ══════ */
 .sect{max-width:1000px;margin:0 auto;padding:6rem 2rem}
 .sect-title{font-size:clamp(1.5rem,3.2vw,2rem);font-weight:800;letter-spacing:-.025em;line-height:1.15;margin-bottom:.6rem}
 .sect-sub{font-size:.95rem;color:var(--ink2);max-width:540px;line-height:1.6;margin-bottom:2.5rem}
 
-/* ── The Default ── */
 .default-section{background:var(--ink);color:white;text-align:center;padding:5rem 2rem}
 .default-section h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.1;margin-bottom:1.5rem;max-width:640px;margin-left:auto;margin-right:auto}
 .default-checks{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem 1.5rem;margin-bottom:1.5rem;font-size:.8rem;font-weight:500;opacity:.8}
 .default-checks span::before{content:'\2713';margin-right:.4rem;color:var(--green);font-weight:700}
-.default-conclusion{font-size:1.05rem;font-weight:500;max-width:480px;margin:0 auto 2rem;line-height:1.55;opacity:.9}
-.default-levers{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.15)}
-.default-lever{text-align:center;max-width:160px}
+.default-conclusion{font-size:1.1rem;font-weight:600;max-width:400px;margin:0 auto 2rem;line-height:1.5;opacity:.95}
+.default-levers{display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.15)}
+.default-lever{text-align:center;max-width:170px}
 .default-lever-tag{font-size:.5rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--amber);margin-bottom:.2rem}
-.default-lever-name{font-size:.82rem;font-weight:700}
+.default-lever-name{font-size:.85rem;font-weight:700}
 .default-lever-desc{font-size:.68rem;opacity:.6;margin-top:.1rem}
 
-/* ── Roadmap ── */
 .roadmap-table{width:100%;max-width:860px;margin:0 auto;border-collapse:separate;border-spacing:0;background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
 .roadmap-table th{padding:.85rem 1rem;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);background:var(--warm);border-bottom:1px solid var(--rule);text-align:left}
 .roadmap-table td{padding:.75rem 1rem;font-size:.75rem;color:var(--ink2);border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.45}
@@ -142,7 +125,6 @@ footer{text-align:center;padding:1.25rem;font-size:.7rem;color:var(--ink3);borde
   .scrolly{flex-direction:column}.scrolly-viz{position:relative;top:0;width:100%;height:50vh}.scrolly-text{width:100%;padding:2rem 0}
   .step{min-height:50vh}.hero{padding:2rem}.hero-nums{gap:2rem}
   .tl-bar{flex-direction:column}.tl-phase:not(:last-child){border-right:none;border-bottom:1px solid var(--rule)}
-  .step-phase .step-card{position:relative;top:0}
 }
 </style>
 </head>
@@ -181,122 +163,122 @@ footer{text-align:center;padding:1.25rem;font-size:.7rem;color:var(--ink3);borde
   </div>
 
   <div class="scrolly-text">
-
-    <!-- OVERVIEW -->
-    <div class="step" data-phase="overview">
-      <div class="step-intro">
-        <strong>Where We Lose Them</strong>
-        <p>75K eligible. 1.7K converted. Four drops, three problem types. Each needs a different strategy.</p>
-      </div>
-    </div>
+    <div class="step" data-phase="overview"><div class="step-intro"><strong>Where We Lose Them</strong><p>75K eligible. 1.7K converted. Four drops, three problem types. Each needs a different strategy.</p></div></div>
 
     <!-- ─── REACH ─── -->
-    <div class="step step-phase" data-phase="reach" style="min-height:130vh;">
-      <div class="step-card" style="border-left:3px solid var(--blue);">
+    <div class="step" data-phase="reach">
+      <div class="step-card" style="border-left:3px solid var(--blue)">
         <span class="lp lp-blue">Reach &mdash; Drop 1</span>
         <div class="step-stat" style="color:var(--blue)">39%</div>
         <h3>Never see it</h3>
-        <p>29K eligible merchants haven't encountered the product at all. Pure visibility problem.</p>
-        <div class="pc-solve" data-at="0.3">
-          <div class="pc-solve-inner">
-            <div class="pc-solve-lbl" style="color:var(--blue)">How We Solve</div>
-            <ul class="b-fix-list">
-              <li><strong>Contextual entry points</strong> &mdash; surface where instant fund availability matters (stores, bookings, restaurants).</li>
-              <li><strong>VIP customer outreach</strong> &mdash; targeted campaigns for high-value merchants.</li>
-              <li><strong>Active choice requirement</strong> &mdash; force a clear decision. Collect feedback when merchants say "no." Critical for learning.</li>
-            </ul>
-          </div>
-        </div>
+        <p>29K eligible merchants haven't encountered the product at all. A pure visibility problem.</p>
+      </div>
+    </div>
+    <div class="step" data-phase="reach">
+      <div class="step-card step-card-wide" style="border-left:3px solid var(--blue)">
+        <span class="lp lp-blue">Reach &mdash; How We Solve</span>
+        <h3>Get Seen, In Context</h3>
+        <ul class="b-fix-list">
+          <li><strong>Active choice requirement</strong> &mdash; force a clear decision. Collect feedback when merchants say "no." Critical for learning.</li>
+          <li><strong>Contextual entry points</strong> &mdash; surface where instant fund availability matters (stores, bookings, restaurants).</li>
+          <li><strong>VIP customer outreach</strong> &mdash; targeted campaigns for high-value merchants.</li>
+        </ul>
       </div>
     </div>
 
     <!-- ─── CONVINCE ─── -->
-    <div class="step step-phase" data-phase="convince" style="min-height:340vh;">
-      <div class="step-card" style="border-left:3px solid var(--amber);">
+    <div class="step" data-phase="convince">
+      <div class="step-card" style="border-left:3px solid var(--amber)">
         <span class="lp lp-amber">Convince &mdash; Drops 2 &amp; 3</span>
         <div class="step-stat" style="color:var(--amber)">72%<span style="font-size:.4em;margin-left:.3rem;color:var(--ink3)">+ 77%</span></div>
         <h3>Saw it, said no</h3>
         <p>72% of exposed users aren't engaged. Of those who reach the welcome screen, 77% don't proceed. The value isn't compelling enough, and the product triggers anxiety.</p>
+      </div>
+    </div>
 
-        <!-- VALUE -->
-        <div class="pc-solve" data-at="0.1">
-          <div class="pc-solve-inner">
-            <div class="pc-solve-lbl" style="color:var(--amber)">How We Solve</div>
-            <div class="pc-sub-lbl">1. Add Value</div>
-            <ul class="b-fix-list">
-              <li><strong>Emphasize instant access</strong> &mdash; earnings available now vs. 2-3 day wait. Already live, under-communicated.</li>
-              <li><strong>Subscription credits</strong> for adopters &mdash; discounts on Wix services. Tangible, immediate incentive.</li>
-              <li><strong>Balance rewards (~1.5% APY)</strong> &mdash; earn on every dollar held. Competitive with Shopify Balance.</li>
-            </ul>
-          </div>
-        </div>
+    <div class="step" data-phase="convince">
+      <div class="step-card step-card-wide" style="border-left:3px solid var(--amber)">
+        <span class="lp lp-amber">Convince &mdash; Add Value</span>
+        <h3>Make the Offer Worth It</h3>
+        <ul class="b-fix-list">
+          <li><strong>Emphasize instant access</strong> &mdash; earnings available now vs. 2-3 day wait. Already live, under-communicated.</li>
+          <li><strong>Subscription credits</strong> for adopters &mdash; discounts on Wix services. Tangible, immediate incentive.</li>
+          <li><strong>Balance rewards (~1.5% APY)</strong> &mdash; earn on every dollar held. Competitive with Shopify Balance.</li>
+        </ul>
+        <p style="margin-top:.6rem;font-size:.72rem;color:var(--ink3);font-style:italic">Value gets attention. But four fears still block the "yes."</p>
+      </div>
+    </div>
 
-        <!-- FEARS HEADER -->
-        <div class="pc-solve" data-at="0.25">
-          <div class="pc-solve-inner">
-            <div class="pc-sub-lbl">2. Dissolve Fears &mdash; Four Hypotheses</div>
-          </div>
-        </div>
+    <div class="step" data-phase="convince">
+      <div class="step-card step-card-wide" style="border-left:3px solid var(--l1)">
+        <span class="lp" style="background:var(--l1bg);color:var(--l1);border:1px solid var(--l1b)">Fear 1</span>
+        <h3>"It's a Bank Account"</h3>
+        <p>Merchants hear "checking account" and think bank. They don't want another bank &mdash; they want to get paid.</p>
+        <div class="b-fix-lbl" style="color:var(--green)">The Fix</div>
+        <ul class="b-fix-list">
+          <li><strong>Test Wix Balance messaging</strong> &mdash; A/B test naming and content. Squarespace positions a similar product as "Balance." Test whether the naming shift improves conversion.</li>
+          <li><strong>Position as a payout wallet</strong> &mdash; not a bank account. Just a better way to receive and manage earnings.</li>
+        </ul>
+      </div>
+    </div>
 
-        <!-- FEAR 1 -->
-        <div class="pc-solve" data-at="0.33">
-          <div class="pc-solve-inner">
-            <div class="pc-fear">
-              <span class="pc-fear-dot" style="background:var(--l1)"></span>
-              <div><strong>"It's a bank account"</strong> &mdash; Test Wix Balance messaging. Squarespace positions a similar product as "Balance." A/B test naming impact on conversion.</div>
-            </div>
-          </div>
-        </div>
+    <div class="step" data-phase="convince">
+      <div class="step-card step-card-wide" style="border-left:3px solid var(--l2)">
+        <span class="lp" style="background:var(--l2bg);color:var(--l2);border:1px solid var(--l2b)">Fear 2</span>
+        <h3>"My Money Gets Stuck"</h3>
+        <p>The #1 rational objection. Merchants fear losing control of cash flow if money enters a Wix account.</p>
+        <div class="b-fix-lbl" style="color:var(--green)">The Fix</div>
+        <ul class="b-fix-list">
+          <li><strong>Auto-payout to external bank by default</strong> &mdash; configurable percentage, daily/weekly/monthly. Money flows through. No lock-in.</li>
+          <li><strong>Merchants keep the speed advantage</strong> &mdash; instant access during the day, auto-transfer at their pace.</li>
+        </ul>
+      </div>
+    </div>
 
-        <!-- FEAR 2 -->
-        <div class="pc-solve" data-at="0.46">
-          <div class="pc-solve-inner">
-            <div class="pc-fear">
-              <span class="pc-fear-dot" style="background:var(--l2)"></span>
-              <div><strong>"My money gets stuck"</strong> &mdash; Auto-payout to external bank by default (configurable % &mdash; daily/weekly/monthly). No lock-in.</div>
-            </div>
-          </div>
-        </div>
+    <div class="step" data-phase="convince">
+      <div class="step-card step-card-wide" style="border-left:3px solid var(--l3)">
+        <span class="lp" style="background:var(--l3bg);color:var(--l3);border:1px solid var(--l3b)">Fear 3</span>
+        <h3>"I Don't Want a Debit Card"</h3>
+        <p>The debit card signals commitment to a new financial product. It feels permanent.</p>
+        <div class="b-fix-lbl" style="color:var(--green)">The Fix</div>
+        <ul class="b-fix-list">
+          <li><strong>Virtual-only by default</strong> &mdash; no physical card unless explicitly requested.</li>
+          <li><strong>De-emphasize the card</strong> &mdash; it's a bonus, not an obligation.</li>
+        </ul>
+      </div>
+    </div>
 
-        <!-- FEAR 3 -->
-        <div class="pc-solve" data-at="0.59">
-          <div class="pc-solve-inner">
-            <div class="pc-fear">
-              <span class="pc-fear-dot" style="background:var(--l3)"></span>
-              <div><strong>"Debit card commitment"</strong> &mdash; Virtual-only by default. Card is a bonus, not an obligation.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- FEAR 4 -->
-        <div class="pc-solve" data-at="0.72">
-          <div class="pc-solve-inner">
-            <div class="pc-fear">
-              <span class="pc-fear-dot" style="background:var(--l4)"></span>
-              <div><strong>"I don't know what this is"</strong> &mdash; Shadow/preview mode. See the balance dashboard before committing. Build familiarity first.</div>
-            </div>
-          </div>
-        </div>
+    <div class="step" data-phase="convince">
+      <div class="step-card step-card-wide" style="border-left:3px solid var(--l4)">
+        <span class="lp" style="background:var(--l4bg);color:var(--l4);border:1px solid var(--l4b)">Fear 4</span>
+        <h3>"I Don't Know What This Is"</h3>
+        <p>Some merchants are wary of the unknown. They don't understand what changes or what they're signing up for.</p>
+        <div class="b-fix-lbl" style="color:var(--green)">The Fix</div>
+        <ul class="b-fix-list">
+          <li><strong>Shadow / preview mode</strong> &mdash; see the balance dashboard before committing. Build familiarity first.</li>
+          <li><strong>Progressive education</strong> &mdash; show how earnings flow, what changes, what stays the same.</li>
+        </ul>
       </div>
     </div>
 
     <!-- ─── ACTIVATE ─── -->
-    <div class="step step-phase" data-phase="activate" style="min-height:130vh;">
-      <div class="step-card" style="border-left:3px solid var(--green);">
+    <div class="step" data-phase="activate">
+      <div class="step-card" style="border-left:3px solid var(--green)">
         <span class="lp lp-green">Activate &mdash; Drop 4</span>
         <div class="step-stat" style="color:var(--green)">44%</div>
         <h3>Decided yes, didn't finish</h3>
         <p>44% who click "Open Account" drop during execution. They wanted it &mdash; we lost them at the door.</p>
-        <div class="pc-solve" data-at="0.3">
-          <div class="pc-solve-inner">
-            <div class="pc-solve-lbl" style="color:var(--green)">How We Solve</div>
-            <ul class="b-fix-list">
-              <li><strong>One-click onboarding</strong> &mdash; account opens in one tap.</li>
-              <li><strong>Virtual card by default</strong> &mdash; physical card issuance moved to post-onboarding.</li>
-              <li><strong>Security steps deferred</strong> &mdash; SSN, business info collected gradually after activation.</li>
-            </ul>
-          </div>
-        </div>
+      </div>
+    </div>
+    <div class="step" data-phase="activate">
+      <div class="step-card step-card-wide" style="border-left:3px solid var(--green)">
+        <span class="lp lp-green">Activate &mdash; How We Solve</span>
+        <h3>Make It Effortless</h3>
+        <ul class="b-fix-list">
+          <li><strong>One-click onboarding</strong> &mdash; account opens in one tap.</li>
+          <li><strong>Virtual card by default</strong> &mdash; physical card issuance moved to post-onboarding.</li>
+          <li><strong>Security steps deferred</strong> &mdash; SSN, business info collected gradually after activation.</li>
+        </ul>
       </div>
     </div>
 
@@ -308,7 +290,6 @@ footer{text-align:center;padding:1.25rem;font-size:.7rem;color:var(--ink3);borde
         <p style="margin-top:.4rem">The answer isn't another feature. It's making this the default &mdash; once there's nothing left to fear or fight.</p>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -323,29 +304,17 @@ footer{text-align:center;padding:1.25rem;font-size:.7rem;color:var(--ink3);borde
     <span>They've previewed the experience</span>
     <span>Activation is one click</span>
   </div>
-  <div class="default-conclusion">
-    No harm. No fear. No friction. This is the new standard.
-  </div>
+  <div class="default-conclusion">No harm. No fear. No friction.<br>This is the new standard.</div>
   <div class="default-levers">
     <div class="default-lever">
-      <div class="default-lever-tag">Carrot</div>
-      <div class="default-lever-name">Balance Rewards</div>
-      <div class="default-lever-desc">APY + subscription credits</div>
-    </div>
-    <div class="default-lever">
-      <div class="default-lever-tag">If needed</div>
+      <div class="default-lever-tag">Stick if needed</div>
       <div class="default-lever-name">Pending Payouts</div>
-      <div class="default-lever-desc">Block external for holdouts</div>
+      <div class="default-lever-desc">Block external payouts for holdouts</div>
     </div>
     <div class="default-lever">
-      <div class="default-lever-tag">If needed</div>
+      <div class="default-lever-tag">Stick if needed</div>
       <div class="default-lever-name">Weekly Payouts</div>
-      <div class="default-lever-desc">Daily &rarr; weekly for holdouts</div>
-    </div>
-    <div class="default-lever">
-      <div class="default-lever-tag">End state</div>
-      <div class="default-lever-name">Full Deprecation</div>
-      <div class="default-lever-desc">Wix Balance = sole experience</div>
+      <div class="default-lever-desc">Reduce external payout frequency</div>
     </div>
   </div>
 </div>
@@ -360,21 +329,21 @@ footer{text-align:center;padding:1.25rem;font-size:.7rem;color:var(--ink3);borde
     <tr><th>When</th><th style="color:var(--blue)">Reach</th><th style="color:var(--amber)">Convince</th><th style="color:var(--green)">Activate</th></tr>
     <tr>
       <td>April</td>
-      <td><strong>Active choice</strong> + feedback collection. Wix Balance A/B test. VIP outreach.</td>
-      <td><strong>Wix Balance</strong> messaging A/B test. Instant access emphasis.</td>
-      <td><strong>One-click onboarding</strong>. Virtual card default.</td>
+      <td><strong>Active choice</strong> + feedback collection. VIP outreach. Contextual entry points.</td>
+      <td>Instant access emphasis. Value prop refinement.</td>
+      <td><strong>One-click onboarding</strong>. Virtual card default. Security steps deferred.</td>
     </tr>
     <tr>
       <td>May&ndash;Jun</td>
-      <td>Contextual entry points. Expanded eligibility.</td>
-      <td><strong>Auto-payout default</strong>. <strong>Balance rewards</strong> launch. Subscription credits.</td>
-      <td>Security steps deferred to post-onboarding.</td>
+      <td>Shadow/preview mode in flows.</td>
+      <td><strong>Wix Balance</strong> messaging A/B test. <strong>Auto-payout default</strong>. <strong>Balance rewards</strong> launch. Subscription credits.</td>
+      <td>Continue security step deferral rollout.</td>
     </tr>
     <tr>
       <td>Jul&ndash;Aug</td>
-      <td>Shadow/preview mode in flows.</td>
-      <td>Measure barrier impact. Refine value prop based on data.</td>
-      <td>Optimize based on conversion data.</td>
+      <td>Measure reach impact.</td>
+      <td>Measure barrier impact. Refine based on data. <strong>Sticks if needed</strong>: pending payouts, weekly payouts.</td>
+      <td>Optimize conversion funnel.</td>
     </tr>
     <tr>
       <td>Q4</td>
@@ -385,9 +354,9 @@ footer{text-align:center;padding:1.25rem;font-size:.7rem;color:var(--ink3);borde
 
 <section class="sect" style="text-align:center;padding-top:0">
   <div class="tl-bar fi" id="tl">
-    <div class="tl-phase"><div class="tl-date">April</div><div class="tl-name">Foundation</div><div class="tl-sub">Active choice + One-click + A/B test</div><div class="tl-progress"></div></div>
-    <div class="tl-phase"><div class="tl-date">May&ndash;June</div><div class="tl-name">Dissolve</div><div class="tl-sub">Auto-payout + Rewards + Security defer</div><div class="tl-progress"></div></div>
-    <div class="tl-phase"><div class="tl-date">Jul&ndash;Aug</div><div class="tl-name">Measure</div><div class="tl-sub">Shadow mode + Barrier data</div><div class="tl-progress"></div></div>
+    <div class="tl-phase"><div class="tl-date">April</div><div class="tl-name">Foundation</div><div class="tl-sub">Active choice + One-click + Value prop</div><div class="tl-progress"></div></div>
+    <div class="tl-phase"><div class="tl-date">May&ndash;June</div><div class="tl-name">Dissolve</div><div class="tl-sub">Balance A/B + Auto-payout + Rewards</div><div class="tl-progress"></div></div>
+    <div class="tl-phase"><div class="tl-date">Jul&ndash;Aug</div><div class="tl-name">Measure &amp; Escalate</div><div class="tl-sub">Barrier data + Sticks if needed</div><div class="tl-progress"></div></div>
     <div class="tl-phase"><div class="tl-date">Q4</div><div class="tl-name">Default</div><div class="tl-sub">Safe. Defensible. Done.</div><div class="tl-progress"></div></div>
   </div>
 </section>
@@ -444,7 +413,6 @@ function setFunnel(phase) {
   wfRows.forEach(r => { r.style.opacity = '0'; const b = r.querySelector('.wf-bar'); b.style.width = '0'; b.style.background = '#c8c6c0'; });
   wfGaps.forEach(g => { g.className = 'wf-gap'; g.querySelector('.wf-gap-line').style.background = 'var(--ink4)'; g.querySelector('.wf-gap-pct').style.color = 'var(--ink3)'; });
   if (phase === 'overview') return;
-
   if (phase === 'reach') {
     [0,1].forEach(i => { wfRows[i].style.opacity = '1'; wfRows[i].querySelector('.wf-bar').style.width = wfRows[i].dataset.w + '%'; wfRows[i].querySelector('.wf-bar').style.background = 'var(--blue)'; });
     wfGaps[0].classList.add('show'); wfGaps[0].querySelector('.wf-gap-line').style.background = 'var(--blue)'; wfGaps[0].querySelector('.wf-gap-pct').style.color = 'var(--blue)';
@@ -468,25 +436,10 @@ function setFunnel(phase) {
 }
 
 function onScroll() {
-  const center = window.innerHeight / 2;
-  let activeIdx = 0;
-  steps.forEach((s, i) => { if (s.getBoundingClientRect().top < center) activeIdx = i; });
-  steps.forEach((s, i) => s.classList.toggle('active', i === activeIdx));
-
-  const activeStep = steps[activeIdx];
-  setFunnel(activeStep.dataset.phase);
-
-  const solves = activeStep.querySelectorAll('.pc-solve');
-  if (solves.length) {
-    const rect = activeStep.getBoundingClientRect();
-    const stepH = activeStep.offsetHeight;
-    const scrolled = center - rect.top;
-    const progress = Math.max(0, Math.min(1, scrolled / stepH));
-    solves.forEach(s => {
-      const at = parseFloat(s.dataset.at);
-      s.classList.toggle('show', progress >= at);
-    });
-  }
+  const c = window.innerHeight / 2; let idx = 0;
+  steps.forEach((s, i) => { if (s.getBoundingClientRect().top < c) idx = i; });
+  steps.forEach((s, i) => s.classList.toggle('active', i === idx));
+  setFunnel(steps[idx].dataset.phase);
 }
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
