@@ -135,6 +135,18 @@ footer{text-align:center;padding:1.25rem;font-size:.7rem;color:var(--ink3);borde
 
 .step-refs{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem}
 
+.fear-card{border-radius:14px;max-width:420px;overflow:hidden;border-left:3px solid var(--amber);box-shadow:0 2px 24px rgba(0,0,0,.04);opacity:.15;transform:translateY(12px);transition:all .5s cubic-bezier(.16,1,.3,1)}
+.step.active .fear-card{opacity:1;transform:none}
+.fear-top{background:var(--amberbg);padding:1.5rem 2rem 1.25rem;position:relative}
+.fear-top::before{content:'\201C';position:absolute;top:.2rem;right:1.25rem;font-size:5.5rem;font-weight:900;color:var(--amber);opacity:.12;line-height:1;font-family:Georgia,serif}
+.fear-top .lp{margin-bottom:.4rem}
+.fear-top h3{font-size:1.1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.3rem;line-height:1.3}
+.fear-top p{font-size:.78rem;color:var(--ink2);line-height:1.5;font-style:italic}
+.fear-bottom{background:rgba(255,255,255,.96);padding:1rem 2rem 1.5rem;border-top:2px dashed var(--amberb)}
+.fear-fix-lbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:.4rem;display:flex;align-items:center;gap:.3rem}
+.fear-fix-lbl svg{width:12px;height:12px}
+.fear-bottom .b-fix-list li::before{content:'\2713';color:var(--green)}
+
 @media(max-width:768px){
   .scrolly{flex-direction:column}.scrolly-viz{position:relative;top:0;width:100%;height:50vh}.scrolly-text{width:100%;padding:2rem 0}
   .step{min-height:50vh}.hero{padding:2rem}.hero-nums{gap:2rem}
@@ -232,54 +244,70 @@ footer{text-align:center;padding:1.25rem;font-size:.7rem;color:var(--ink3);borde
     </div>
 
     <div class="step" data-phase="convince">
-      <div class="step-card step-card-wide" style="border-left:3px solid var(--amber);background:var(--amberbg)">
-        <span class="lp lp-amber">Fear 1</span>
-        <h3>"It's a Bank Account"</h3>
-        <p>Merchants hear "checking account" and think bank. They don't want another bank &mdash; they want to get paid.</p>
-        <div class="b-fix-lbl" style="color:var(--green)">The Fix</div>
-        <ul class="b-fix-list">
-          <li><strong>Test Wix Balance messaging</strong> &mdash; A/B test naming and content. Squarespace positions a similar product as "Balance." Test whether the naming shift improves conversion.</li>
-          <li><strong>Position as a payout wallet</strong> &mdash; not a bank account. Just a better way to receive and manage earnings.</li>
-        </ul>
+      <div class="fear-card">
+        <div class="fear-top">
+          <span class="lp lp-amber">Fear 1</span>
+          <h3>"It's a Bank Account"</h3>
+          <p>Merchants hear "checking account" and think bank. They don't want another bank &mdash; they want to get paid.</p>
+        </div>
+        <div class="fear-bottom">
+          <div class="fear-fix-lbl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>How we dissolve it</div>
+          <ul class="b-fix-list">
+            <li><strong>Test Wix Balance messaging</strong> &mdash; A/B test naming and content. Squarespace positions a similar product as "Balance." Test whether the naming shift improves conversion.</li>
+            <li><strong>Position as a payout wallet</strong> &mdash; not a bank account. Just a better way to receive and manage earnings.</li>
+          </ul>
+        </div>
       </div>
     </div>
 
     <div class="step" data-phase="convince">
-      <div class="step-card step-card-wide" style="border-left:3px solid var(--amber);background:var(--amberbg)">
-        <span class="lp lp-amber">Fear 2</span>
-        <h3>"My Money Gets Stuck"</h3>
-        <p>The #1 rational objection. Merchants fear losing control of cash flow if money enters a Wix account.</p>
-        <div class="b-fix-lbl" style="color:var(--green)">The Fix</div>
-        <ul class="b-fix-list">
-          <li><strong>Auto-payout to external bank by default</strong> &mdash; configurable percentage, daily/weekly/monthly. Money flows through. No lock-in.</li>
-          <li><strong>Merchants keep the speed advantage</strong> &mdash; instant access during the day, auto-transfer at their pace.</li>
-        </ul>
+      <div class="fear-card">
+        <div class="fear-top">
+          <span class="lp lp-amber">Fear 2</span>
+          <h3>"My Money Gets Stuck"</h3>
+          <p>The #1 rational objection. Merchants fear losing control of cash flow if money enters a Wix account.</p>
+        </div>
+        <div class="fear-bottom">
+          <div class="fear-fix-lbl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>How we dissolve it</div>
+          <ul class="b-fix-list">
+            <li><strong>Auto-payout to external bank by default</strong> &mdash; configurable percentage, daily/weekly/monthly. Money flows through. No lock-in.</li>
+            <li><strong>Merchants keep the speed advantage</strong> &mdash; instant access during the day, auto-transfer at their pace.</li>
+          </ul>
+        </div>
       </div>
     </div>
 
     <div class="step" data-phase="convince">
-      <div class="step-card step-card-wide" style="border-left:3px solid var(--amber);background:var(--amberbg)">
-        <span class="lp lp-amber">Fear 3</span>
-        <h3>"I Don't Want a Debit Card"</h3>
-        <p>The debit card signals commitment to a new financial product. It feels permanent.</p>
-        <div class="b-fix-lbl" style="color:var(--green)">The Fix</div>
-        <ul class="b-fix-list">
-          <li><strong>Virtual-only by default</strong> &mdash; no physical card unless explicitly requested.</li>
-          <li><strong>De-emphasize the card</strong> &mdash; it's a bonus, not an obligation.</li>
-        </ul>
+      <div class="fear-card">
+        <div class="fear-top">
+          <span class="lp lp-amber">Fear 3</span>
+          <h3>"I Don't Want a Debit Card"</h3>
+          <p>The debit card signals commitment to a new financial product. It feels permanent.</p>
+        </div>
+        <div class="fear-bottom">
+          <div class="fear-fix-lbl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>How we dissolve it</div>
+          <ul class="b-fix-list">
+            <li><strong>Virtual-only by default</strong> &mdash; no physical card unless explicitly requested.</li>
+            <li><strong>De-emphasize the card</strong> &mdash; it's a bonus, not an obligation.</li>
+          </ul>
+        </div>
       </div>
     </div>
 
     <div class="step" data-phase="convince">
-      <div class="step-card step-card-wide" style="border-left:3px solid var(--amber);background:var(--amberbg)">
-        <span class="lp lp-amber">Fear 4</span>
-        <h3>"I Don't Know What This Is"</h3>
-        <p>Some merchants are wary of the unknown. They don't understand what changes or what they're signing up for.</p>
-        <div class="b-fix-lbl" style="color:var(--green)">The Fix</div>
-        <ul class="b-fix-list">
-          <li><strong>Shadow / preview mode</strong> &mdash; see the balance dashboard before committing. Build familiarity first.</li>
-          <li><strong>Progressive education</strong> &mdash; show how earnings flow, what changes, what stays the same.</li>
-        </ul>
+      <div class="fear-card">
+        <div class="fear-top">
+          <span class="lp lp-amber">Fear 4</span>
+          <h3>"I Don't Know What This Is"</h3>
+          <p>Some merchants are wary of the unknown. They don't understand what changes or what they're signing up for.</p>
+        </div>
+        <div class="fear-bottom">
+          <div class="fear-fix-lbl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>How we dissolve it</div>
+          <ul class="b-fix-list">
+            <li><strong>Shadow / preview mode</strong> &mdash; see the balance dashboard before committing. Build familiarity first.</li>
+            <li><strong>Progressive education</strong> &mdash; show how earnings flow, what changes, what stays the same.</li>
+          </ul>
+        </div>
       </div>
     </div>
 
