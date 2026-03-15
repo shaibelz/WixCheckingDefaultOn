@@ -146,6 +146,15 @@ footer{text-align:center;padding:1.25rem;font-size:.7rem;color:var(--ink3);borde
 .fear-fix-lbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:.4rem;display:flex;align-items:center;gap:.3rem}
 .fear-fix-lbl svg{width:12px;height:12px}
 .fear-bottom .b-fix-list li::before{content:'\2713';color:var(--green)}
+.fear-top .lp{font-size:.65rem;padding:.2rem .6rem}
+
+.solve-card{border-radius:14px;max-width:420px;overflow:hidden;box-shadow:0 2px 24px rgba(0,0,0,.04);opacity:.15;transform:translateY(12px);transition:all .5s cubic-bezier(.16,1,.3,1)}
+.step.active .solve-card{opacity:1;transform:none}
+.solve-top{padding:1.25rem 2rem 1rem}
+.solve-top .lp{margin-bottom:.4rem}
+.solve-top h3{font-size:1.05rem;font-weight:700;letter-spacing:-.02em;line-height:1.3}
+.solve-bottom{background:rgba(255,255,255,.96);padding:1rem 2rem 1.5rem}
+.solve-bottom p{font-size:.8rem;color:var(--ink2);line-height:1.55}
 
 @media(max-width:768px){
   .scrolly{flex-direction:column}.scrolly-viz{position:relative;top:0;width:100%;height:50vh}.scrolly-text{width:100%;padding:2rem 0}
@@ -204,16 +213,20 @@ footer{text-align:center;padding:1.25rem;font-size:.7rem;color:var(--ink3);borde
       </div>
     </div>
     <div class="step" data-phase="reach">
-      <div class="step-card step-card-wide" style="border-left:3px solid var(--blue);background:#dbeafe">
-        <span class="lp lp-blue">Reach &mdash; How We Solve</span>
-        <h3>Get Seen, In Context</h3>
-        <ul class="b-fix-list">
-          <li><strong>Active choice requirement</strong> &mdash; force a clear decision. Collect feedback when merchants say "no." Critical for learning.</li>
-          <li><strong>Contextual entry points</strong> &mdash; surface where instant fund availability matters (stores, bookings, restaurants).</li>
-          <li><strong>New entry points</strong> &mdash; embed in Wix general flows (Payouts page, Welcome page, Demo site).</li>
-          <li><strong>VIP customer outreach</strong> &mdash; targeted campaigns for high-value merchants.</li>
-          <li><strong>Eligibility expansion</strong> &mdash; increase the addressable pool beyond current 75K.</li>
-        </ul>
+      <div class="solve-card" style="border-left:3px solid var(--blue)">
+        <div class="solve-top" style="background:#dbeafe">
+          <span class="lp lp-blue">Reach &mdash; How We Solve</span>
+          <h3>Get Seen, In Context</h3>
+        </div>
+        <div class="solve-bottom">
+          <ul class="b-fix-list">
+            <li><strong>Active choice requirement</strong> &mdash; force a clear decision. Collect feedback when merchants say "no." Critical for learning.</li>
+            <li><strong>Contextual entry points</strong> &mdash; surface where instant fund availability matters (stores, bookings, restaurants).</li>
+            <li><strong>New entry points</strong> &mdash; embed in Wix general flows (Payouts page, Welcome page, Demo site).</li>
+            <li><strong>VIP customer outreach</strong> &mdash; targeted campaigns for high-value merchants.</li>
+            <li><strong>Eligibility expansion</strong> &mdash; increase the addressable pool beyond current 75K.</li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -231,15 +244,19 @@ footer{text-align:center;padding:1.25rem;font-size:.7rem;color:var(--ink3);borde
     </div>
 
     <div class="step" data-phase="convince">
-      <div class="step-card step-card-wide" style="border-left:3px solid var(--amber);background:#fef3c7">
-        <span class="lp lp-amber">Convince &mdash; Add Value</span>
-        <h3>Make the Offer Worth It</h3>
-        <ul class="b-fix-list">
-          <li><strong>Emphasize instant access</strong> &mdash; earnings available now vs. 2-3 day wait. Already live, under-communicated.</li>
-          <li><strong>Subscription credits</strong> for adopters &mdash; discounts on Wix services. Tangible, immediate incentive.</li>
-          <li><strong>Balance rewards (~1.5% APY)</strong> &mdash; earn on every dollar held.</li>
-        </ul>
-        <p style="margin-top:.6rem;font-size:.72rem;color:var(--ink3);font-style:italic">Value gets attention. But four fears still block the "yes."</p>
+      <div class="solve-card" style="border-left:3px solid var(--amber)">
+        <div class="solve-top" style="background:#fef3c7">
+          <span class="lp lp-amber">Convince &mdash; Add Value</span>
+          <h3>Make the Offer Worth It</h3>
+        </div>
+        <div class="solve-bottom">
+          <ul class="b-fix-list">
+            <li><strong>Emphasize instant access</strong> &mdash; earnings available now vs. 2-3 day wait. Already live, under-communicated.</li>
+            <li><strong>Subscription credits</strong> for adopters &mdash; discounts on Wix services. Tangible, immediate incentive.</li>
+            <li><strong>Balance rewards (~1.5% APY)</strong> &mdash; earn on every dollar held.</li>
+          </ul>
+          <p style="margin-top:.6rem;font-size:.72rem;color:var(--ink3);font-style:italic">Value gets attention. But four fears still block the "yes."</p>
+        </div>
       </div>
     </div>
 
@@ -324,16 +341,20 @@ footer{text-align:center;padding:1.25rem;font-size:.7rem;color:var(--ink3);borde
       </div>
     </div>
     <div class="step" data-phase="activate">
-      <div class="step-card step-card-wide" style="border-left:3px solid var(--green);background:#d1fae5">
-        <span class="lp lp-green">Activate &mdash; How We Solve</span>
-        <h3>Make It Effortless</h3>
-        <ul class="b-fix-list">
-          <li><strong>One-click onboarding</strong> &mdash; account opens in one tap.</li>
-          <li><strong>Virtual card by default</strong> &mdash; physical card issuance moved to post-onboarding.</li>
-          <li><strong>Security steps deferred</strong> &mdash; SSN, business info collected gradually after activation.</li>
-        </ul>
-        <div class="step-refs">
-          <a class="step-ref" href="prd-one-click-setup.html" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Full PRD</a>
+      <div class="solve-card" style="border-left:3px solid var(--green)">
+        <div class="solve-top" style="background:#d1fae5">
+          <span class="lp lp-green">Activate &mdash; How We Solve</span>
+          <h3>Make It Effortless</h3>
+        </div>
+        <div class="solve-bottom">
+          <ul class="b-fix-list">
+            <li><strong>One-click onboarding</strong> &mdash; account opens in one tap.</li>
+            <li><strong>Virtual card by default</strong> &mdash; physical card issuance moved to post-onboarding.</li>
+            <li><strong>Security steps deferred</strong> &mdash; SSN, business info collected gradually after activation.</li>
+          </ul>
+          <div class="step-refs">
+            <a class="step-ref" href="prd-one-click-setup.html" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Full PRD</a>
+          </div>
         </div>
       </div>
     </div>
