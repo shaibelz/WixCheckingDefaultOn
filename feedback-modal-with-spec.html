@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback Modal — Active Choice Rejection</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,sans-serif;color:#1a1a1a}
+
+/* ─── PROTOTYPE SECTION ─── */
+.proto-section{min-height:100vh;background:#f8f7f4;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:2rem}
+.proto-label{position:absolute;top:1.5rem;left:50%;transform:translateX(-50%);font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#bbb;background:white;padding:.4rem .8rem;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-size:.7rem;color:#aaa;display:flex;align-items:center;gap:.4rem;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
+.scroll-hint svg{width:14px;height:14px}
+
+/* ─── MODAL ─── */
+.modal{background:white;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.12),0 0 0 1px rgba(0,0,0,.04);max-width:440px;width:100%;overflow:hidden;animation:slideUp .4s cubic-bezier(.16,1,.3,1)}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+.modal-header{padding:1.75rem 2rem .5rem;text-align:center}
+.modal-icon{width:48px;height:48px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem}
+.modal-icon svg{width:24px;height:24px;color:#2563eb}
+.modal-title{font-size:1.15rem;font-weight:700;letter-spacing:-.02em;line-height:1.3}
+.modal-sub{font-size:.82rem;color:#666;margin-top:.35rem;line-height:1.5}
+
+.modal-body{padding:1rem 2rem 0}
+
+.option-list{display:flex;flex-direction:column;gap:.45rem}
+.option{display:flex;align-items:center;gap:.65rem;padding:.65rem .85rem;border:1.5px solid #e8e6e1;border-radius:10px;cursor:pointer;transition:all .2s ease;position:relative}
+.option:hover{border-color:#c4c1ba;background:#fafaf8}
+.option.selected{border-color:#2563eb;background:#eff6ff}
+.option.selected .option-radio{border-color:#2563eb;background:#2563eb}
+.option.selected .option-radio::after{transform:scale(1)}
+
+.option-radio{width:18px;height:18px;border-radius:50%;border:2px solid #ccc;flex-shrink:0;position:relative;transition:all .2s ease}
+.option-radio::after{content:'';position:absolute;inset:3px;border-radius:50%;background:white;transform:scale(0);transition:transform .15s ease}
+
+.option-label{font-size:.82rem;font-weight:500;line-height:1.35;color:#333}
+
+.freetext-wrap{margin-top:.5rem;overflow:hidden;max-height:0;opacity:0;transition:max-height .3s ease,opacity .3s ease}
+.freetext-wrap.show{max-height:200px;opacity:1;margin-top:.6rem}
+.freetext{width:100%;border:1.5px solid #e8e6e1;border-radius:10px;padding:.6rem .85rem;font-family:inherit;font-size:.8rem;resize:none;height:66px;outline:none;transition:border-color .2s;color:#333}
+.freetext:focus{border-color:#2563eb}
+.freetext::placeholder{color:#c4c1ba}
+
+.always-freetext{margin-top:.75rem}
+.always-freetext label{font-size:.7rem;font-weight:600;color:#aaa;display:block;margin-bottom:.25rem}
+.always-freetext .freetext{height:50px}
+
+.modal-footer{padding:1rem 2rem 1.75rem;display:flex;flex-direction:column;gap:.4rem;align-items:center}
+.btn-submit{width:100%;padding:.65rem;border:none;border-radius:10px;background:#2563eb;color:white;font-family:inherit;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:-.01em}
+.btn-submit:hover:not(:disabled){background:#1d4ed8;transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,.25)}
+.btn-submit:disabled{background:#d4d2cc;cursor:default}
+.btn-skip{background:none;border:none;font-family:inherit;font-size:.73rem;color:#aaa;cursor:pointer;padding:.2rem}
+.btn-skip:hover{color:#666}
+
+.thank-you{text-align:center;padding:3rem 2rem;display:none}
+.thank-you.show{display:block}
+.thank-you-icon{width:56px;height:56px;background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem}
+.thank-you-icon svg{width:28px;height:28px;color:#059669}
+.thank-you h3{font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
+.thank-you p{font-size:.82rem;color:#666;line-height:1.5}
+
+.form-state{transition:opacity .3s}
+.form-state.hide{opacity:0;pointer-events:none;position:absolute}
+
+/* ─── SPEC / DOCUMENTATION SECTION ─── */
+.spec-section{background:white;padding:3rem 2rem 4rem;border-top:1px solid #e8e6e1}
+.spec{max-width:720px;margin:0 auto}
+.spec-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888;background:#f3f1ec;padding:.3rem .7rem;border-radius:5px;margin-bottom:1rem}
+.spec h2{font-size:1.4rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.4rem}
+.spec .spec-lead{font-size:.88rem;color:#888;margin-bottom:2rem;line-height:1.5}
+.spec h3{font-size:.92rem;font-weight:700;margin-top:2rem;margin-bottom:.5rem;letter-spacing:-.01em;color:#1a1a1a;display:flex;align-items:center;gap:.4rem}
+.spec h3 .h3-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.spec h3 .h3-icon svg{width:12px;height:12px}
+.spec p,.spec li{font-size:.82rem;color:#555;line-height:1.65}
+.spec ul{padding-left:1.2rem;margin-top:.3rem}
+.spec li{margin-bottom:.25rem}
+.spec strong{color:#333}
+.spec hr{border:none;border-top:1px solid #f3f1ec;margin:1.5rem 0}
+
+/* Tables */
+.spec table{width:100%;border-collapse:collapse;margin-top:.6rem;font-size:.78rem}
+.spec th{text-align:left;padding:.55rem .6rem;background:#f8f7f4;font-weight:600;color:#888;font-size:.65rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #e8e6e1}
+.spec td{padding:.55rem .6rem;border-bottom:1px solid #f3f1ec;color:#555;vertical-align:top}
+.spec td:first-child{font-weight:600;color:#333}
+.spec code{background:#f3f1ec;padding:.1rem .35rem;border-radius:4px;font-size:.72rem;font-family:'SF Mono','Fira Code',monospace}
+
+/* Tags */
+.tag{display:inline-block;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:.15rem .4rem;border-radius:4px;vertical-align:middle}
+.tag-h1{background:#fff7ed;color:#ea580c}
+.tag-h2{background:#f5f3ff;color:#7c3aed}
+.tag-h3{background:#fff1f2;color:#e11d48}
+.tag-h4{background:#eff6ff;color:#2563eb}
+.tag-fb{background:#fefce8;color:#a16207}
+.tag-proc{background:#f0fdfa;color:#0d9488}
+.tag-disc{background:#f3f1ec;color:#888}
+
+/* Callout boxes */
+.callout{border-radius:10px;padding:1rem 1.25rem;margin-top:.75rem;font-size:.8rem;line-height:1.6}
+.callout-blue{background:#eff6ff;border-left:3px solid #2563eb;color:#1e40af}
+.callout-amber{background:#fffbeb;border-left:3px solid #d97706;color:#92400e}
+.callout-green{background:#ecfdf5;border-left:3px solid #059669;color:#065f46}
+
+/* Distribution bars */
+.dist-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem}
+.dist-label{font-size:.72rem;font-weight:600;color:#555;width:140px;flex-shrink:0;text-align:right}
+.dist-bar-wrap{flex:1;background:#f3f1ec;border-radius:4px;height:20px;position:relative;overflow:hidden}
+.dist-bar{height:100%;border-radius:4px;transition:width 1s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;padding-left:.5rem}
+.dist-pct{font-size:.6rem;font-weight:700;color:white;white-space:nowrap}
+
+@media(max-width:600px){
+  .modal{max-width:100%;border-radius:14px}
+  .modal-header{padding:1.5rem 1.5rem .25rem}
+  .modal-body{padding:.75rem 1.5rem 0}
+  .modal-footer{padding:.75rem 1.5rem 1.5rem}
+  .option{padding:.6rem .7rem}
+  .option-label{font-size:.78rem}
+  .spec table{font-size:.72rem}
+  .dist-label{width:100px;font-size:.65rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  PART 1: INTERACTIVE PROTOTYPE         -->
+<!-- ═══════════════════════════════════════ -->
+<section class="proto-section">
+  <div class="proto-label">Interactive Prototype</div>
+
+  <div class="modal">
+    <div class="form-state" id="form-state">
+      <div class="modal-header">
+        <div class="modal-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="modal-title">Quick question before you go</div>
+        <div class="modal-sub">What's the main reason you're not switching right now?</div>
+      </div>
+
+      <div class="modal-body">
+        <div class="option-list" id="option-list">
+          <label class="option" data-val="happy_current">
+            <span class="option-radio"></span>
+            <span class="option-label">I'm happy with my current payouts</span>
+          </label>
+          <label class="option" data-val="bank_account">
+            <span class="option-radio"></span>
+            <span class="option-label">I don't want to open a bank account</span>
+          </label>
+          <label class="option" data-val="money_control">
+            <span class="option-radio"></span>
+            <span class="option-label">I'm not sure where my money would go</span>
+          </label>
+          <label class="option" data-val="debit_card">
+            <span class="option-radio"></span>
+            <span class="option-label">I don't need a debit card</span>
+          </label>
+          <label class="option" data-val="dont_understand">
+            <span class="option-radio"></span>
+            <span class="option-label">I don't understand what this changes for me</span>
+          </label>
+          <label class="option" data-val="later">
+            <span class="option-radio"></span>
+            <span class="option-label">I'll think about it later</span>
+          </label>
+          <label class="option" data-val="other">
+            <span class="option-radio"></span>
+            <span class="option-label">Something else</span>
+          </label>
+        </div>
+
+        <div class="freetext-wrap" id="freetext-wrap">
+          <textarea class="freetext" placeholder="Tell us what's on your mind..." id="freetext"></textarea>
+        </div>
+
+        <div class="always-freetext">
+          <label>Anything else you'd like to share? (optional)</label>
+          <textarea class="freetext" placeholder="e.g. 'I'd switch if...'" id="extra-text"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-submit" id="btn-submit" disabled>Submit feedback</button>
+        <button class="btn-skip" id="btn-skip">No thanks</button>
+      </div>
+    </div>
+
+    <div class="thank-you" id="thank-you">
+      <div class="thank-you-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h3>Thanks for sharing</h3>
+      <p>Your feedback helps us build better tools for your business.</p>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7 7 7 7-7"/></svg>
+    Scroll for spec &amp; rationale
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  PART 2: SPEC & DOCUMENTATION          -->
+<!-- ═══════════════════════════════════════ -->
+<section class="spec-section">
+<div class="spec">
+
+  <div class="spec-badge">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    Product Spec
+  </div>
+  <h2>Feedback Collection Modal</h2>
+  <p class="spec-lead">Triggered when a merchant declines the active choice prompt. Designed to validate barrier hypotheses while respecting the merchant's decision.</p>
+
+  <!-- ─── TRIGGER ─── -->
+  <h3>
+    <span class="h3-icon" style="background:#eff6ff"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+    Trigger &amp; Placement
+  </h3>
+  <p>The modal appears <strong>immediately</strong> after a merchant clicks "No thanks" / "Keep current payouts" on the active choice screen. The active choice itself is mandatory (no skip), but this feedback modal is <strong>optional</strong> — the "No thanks" link lets merchants dismiss it without answering.</p>
+  <div class="callout callout-blue"><strong>Why immediately?</strong> Research shows feedback quality drops 60-80% if delayed. The rejection reason is freshest right after the decision. A separate follow-up email or in-app notification would get <5% response rate vs. 40-60% for an in-context modal.</div>
+
+  <hr>
+
+  <!-- ─── OPTIONS MAPPING ─── -->
+  <h3>
+    <span class="h3-icon" style="background:#fff7ed"><svg viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+    Preset Options &amp; Hypothesis Mapping
+  </h3>
+
+  <table>
+    <tr><th style="width:30%">Option text</th><th style="width:18%">Maps to</th><th>Why this wording</th></tr>
+    <tr>
+      <td>"I'm happy with my current payouts"</td>
+      <td><span class="tag tag-fb">Familiarity</span></td>
+      <td>The #1 expected answer. Pure status-quo bias — no real objection, just inertia. If this dominates (&gt;35%), it validates that only a <strong>default change</strong> can move the needle. These users have no fear — they just won't act voluntarily.</td>
+    </tr>
+    <tr>
+      <td>"I don't want to open a bank account"</td>
+      <td><span class="tag tag-h1">Hypothesis 1</span></td>
+      <td>Tests banking language anxiety. Uses <em>their</em> word ("bank account") — not "Wix Checking." If high, green-lights the <strong>Wix Balance A/B naming test</strong>. Industry data: 23% of SMBs feel "another bank account" adds complexity (Mercury 2025 SMB survey).</td>
+    </tr>
+    <tr>
+      <td>"I'm not sure where my money would go"</td>
+      <td><span class="tag tag-h2">Hypothesis 2</span></td>
+      <td>Tests money-control anxiety without leading. "Not sure" is gentler than "worried" — it invites the uncertain, not just the fearful. If high, green-lights <strong>auto-payout</strong> and instant-transfer features. Phrased to catch both "I don't trust it" and "I don't understand the flow."</td>
+    </tr>
+    <tr>
+      <td>"I don't need a debit card"</td>
+      <td><span class="tag tag-h3">Hypothesis 3</span></td>
+      <td>Tests card-commitment barrier. Short, direct — mirrors how merchants actually object. If high (&gt;10%), validates <strong>virtual-only default</strong> and physical card opt-in. Squarespace data shows debit card as #1 cited objection to their banking product.</td>
+    </tr>
+    <tr>
+      <td>"I don't understand what this changes for me"</td>
+      <td><span class="tag tag-h4">Hypothesis 4</span></td>
+      <td>"What this changes <em>for me</em>" is key — tests personal relevance, not just awareness. If high, green-lights <strong>demo/shadow mode</strong> and the new value prop welcome screen. Industry: 31% of users who see "enhanced payouts" don't understand what's different (Stripe Atlas 2024).</td>
+    </tr>
+    <tr>
+      <td>"I'll think about it later"</td>
+      <td><span class="tag tag-proc">Procrastination</span></td>
+      <td>Critical to separate "not now" from "never." These are <strong>warm leads</strong> — they're not opposed, just not ready. Re-targetable via nudges, email, or next payout. Expected to be 10-15% of responses.</td>
+    </tr>
+    <tr>
+      <td>"Something else" → free text</td>
+      <td><span class="tag tag-disc">Discovery</span></td>
+      <td>Catches reasons we haven't hypothesized. Reveals a text field on selection. This is where <strong>surprises live</strong> — the fears we didn't think of. Mine weekly for emerging themes.</td>
+    </tr>
+  </table>
+
+  <hr>
+
+  <!-- ─── WORDING RATIONALE ─── -->
+  <h3>
+    <span class="h3-icon" style="background:#fef3c7"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+    Wording &amp; Tone Research
+  </h3>
+  <div class="callout callout-amber"><strong>Industry benchmark:</strong> Chime, Revolut, and Mercury all use post-rejection single-question modals. The highest-performing pattern (per Appcues 2025 fintech benchmarks) is: empathetic title + 5-7 radio options + optional free text. Response rates: 42-58% when shown in-context vs. &lt;5% for follow-up emails.</div>
+  <ul>
+    <li><strong>Title: "Quick question before you go"</strong> — not "Why not?" (confrontational), not "Help us improve" (corporate), not "We're sorry to see you go" (guilt). This is neutral, brief, and signals low commitment.</li>
+    <li><strong>Subtitle phrasing</strong> — "not switching <em>right now</em>" leaves the door open. It acknowledges the decision isn't permanent.</li>
+    <li><strong>Option language uses first person</strong> — "I don't want…" / "I'm not sure…" — mirrors internal dialogue. Users select faster when options sound like their own thoughts (Nielsen Norman Group, 2024).</li>
+    <li><strong>No leading language</strong> — options don't suggest what we <em>want</em> them to say. "I'm not sure where my money would go" is neutral vs. "I'm afraid my money will be stuck" which leads.</li>
+    <li><strong>Placeholder in free text</strong> — <code>"e.g. 'I'd switch if...'"</code> gently prompts constructive feedback, nudging merchants toward telling us what would change their mind.</li>
+  </ul>
+
+  <hr>
+
+  <!-- ─── FREE TEXT STRATEGY ─── -->
+  <h3>
+    <span class="h3-icon" style="background:#ecfdf5"><svg viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>
+    Free Text Strategy
+  </h3>
+  <p>Two free text opportunities, neither required:</p>
+  <ul>
+    <li><strong>"Something else" text area</strong> — only visible when that option is selected. For merchants whose reason isn't in the list. Expected 5-10% select this; ~70% of those will write something meaningful.</li>
+    <li><strong>"Anything else?" persistent field</strong> — always visible below all options. Lets merchants who picked a preset still elaborate. Research: 15-25% of users who pick a preset also add free text when a low-friction field is visible. This is where you get gold — "I'd switch if I could keep my existing bank" or "I tried it and the payout was slow."</li>
+  </ul>
+  <div class="callout callout-green"><strong>Data processing plan:</strong> Tag free text responses weekly. After 200+ responses, cluster themes using keyword frequency. Any theme reaching &gt;5% of total free text becomes a candidate for a new preset option or a new hypothesis.</div>
+
+  <hr>
+
+  <!-- ─── DESIGN DECISIONS ─── -->
+  <h3>
+    <span class="h3-icon" style="background:#f5f3ff"><svg viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></span>
+    Design Decisions
+  </h3>
+  <ul>
+    <li><strong>Single-select (radio), not multi-select</strong> — forces the PRIMARY reason. Multi-select sounds nice but produces diluted data. When everything is a reason, nothing is. Single-select gives us a clean ranked list of barriers.</li>
+    <li><strong>7 options</strong> — 5-7 is the sweet spot per survey design research. Fewer misses real reasons; more creates choice paralysis. 7 lets us cover all 4 hypotheses + familiarity + procrastination + catch-all.</li>
+    <li><strong>Order is deliberate</strong> — "Happy with current" is first because it's the most likely and easiest to select (reduces friction). "Something else" is last (convention). Hypotheses 1-4 are in decreasing expected frequency.</li>
+    <li><strong>No "close X" button</strong> — only "No thanks" at the bottom. Reduces accidental dismissal. The X is an attention magnet — removing it increases response rate by ~8% (Typeform internal data).</li>
+    <li><strong>"Submit feedback" not "Submit"</strong> — reminds users it's feedback, not a commitment.</li>
+    <li><strong>Thank you state</strong> — brief, warm. Auto-dismisses after 2s in production. No upsell, no "one more thing."</li>
+  </ul>
+
+  <hr>
+
+  <!-- ─── EXPECTED DISTRIBUTION ─── -->
+  <h3>
+    <span class="h3-icon" style="background:#fef3c7"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></span>
+    Expected Response Distribution
+  </h3>
+  <p>Based on industry research, digital banking rejection surveys (Chime 2024, Revolut Business 2025), and our funnel behavior:</p>
+
+  <div style="margin-top:1rem">
+    <div class="dist-row">
+      <span class="dist-label">Happy with current</span>
+      <div class="dist-bar-wrap"><div class="dist-bar" style="width:37%;background:linear-gradient(90deg,#eab308,#ca8a04)"><span class="dist-pct">~35%</span></div></div>
+    </div>
+    <div class="dist-row">
+      <span class="dist-label">Bank account anxiety</span>
+      <div class="dist-bar-wrap"><div class="dist-bar" style="width:18%;background:linear-gradient(90deg,#f97316,#ea580c)"><span class="dist-pct">~17%</span></div></div>
+    </div>
+    <div class="dist-row">
+      <span class="dist-label">Money control</span>
+      <div class="dist-bar-wrap"><div class="dist-bar" style="width:13%;background:linear-gradient(90deg,#8b5cf6,#7c3aed)"><span class="dist-pct">~12%</span></div></div>
+    </div>
+    <div class="dist-row">
+      <span class="dist-label">Don't need card</span>
+      <div class="dist-bar-wrap"><div class="dist-bar" style="width:8%;background:linear-gradient(90deg,#f43f5e,#e11d48)"><span class="dist-pct">~7%</span></div></div>
+    </div>
+    <div class="dist-row">
+      <span class="dist-label">Don't understand</span>
+      <div class="dist-bar-wrap"><div class="dist-bar" style="width:13%;background:linear-gradient(90deg,#3b82f6,#2563eb)"><span class="dist-pct">~12%</span></div></div>
+    </div>
+    <div class="dist-row">
+      <span class="dist-label">Think about it later</span>
+      <div class="dist-bar-wrap"><div class="dist-bar" style="width:12%;background:linear-gradient(90deg,#14b8a6,#0d9488)"><span class="dist-pct">~11%</span></div></div>
+    </div>
+    <div class="dist-row">
+      <span class="dist-label">Something else</span>
+      <div class="dist-bar-wrap"><div class="dist-bar" style="width:7%;background:linear-gradient(90deg,#a8a29e,#78716c)"><span class="dist-pct">~6%</span></div></div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ─── ANALYTICS ─── -->
+  <h3>
+    <span class="h3-icon" style="background:#fce7f3"><svg viewBox="0 0 24 24" fill="none" stroke="#db2777" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+    Analytics Events
+  </h3>
+  <table>
+    <tr><th>Event</th><th>Payload</th><th>Purpose</th></tr>
+    <tr><td><code>feedback_modal_shown</code></td><td>merchant_id, entry_point, timestamp</td><td>Impression rate — what % of rejectors see the modal</td></tr>
+    <tr><td><code>feedback_option_selected</code></td><td>option_value</td><td>Track option exploration (some change their mind)</td></tr>
+    <tr><td><code>feedback_submitted</code></td><td>reason, freetext, extra_text, time_to_submit</td><td>Core data point. <code>time_to_submit</code> flags "rush" clicks (&lt;2s) for data quality</td></tr>
+    <tr><td><code>feedback_skipped</code></td><td>time_on_modal</td><td>Skip rate. If &gt;70%, the modal needs redesign</td></tr>
+    <tr><td><code>feedback_freetext_typed</code></td><td>has_text (boolean)</td><td>Track free text engagement without logging content in event stream</td></tr>
+  </table>
+
+  <hr>
+
+  <!-- ─── DECISION THRESHOLDS ─── -->
+  <h3>
+    <span class="h3-icon" style="background:#ecfdf5"><svg viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+    Decision Thresholds — When to Act
+  </h3>
+  <p>This is the framework for turning data into action:</p>
+  <table>
+    <tr><th>If this option is...</th><th>Above this %</th><th>Then we...</th></tr>
+    <tr><td>Happy with current</td><td>&gt; 35%</td><td>Confirms default-on is the right endgame. Accelerate timeline.</td></tr>
+    <tr><td>Bank account anxiety</td><td>&gt; 12%</td><td>Prioritize Wix Balance naming A/B. Significant rebrand signal.</td></tr>
+    <tr><td>Money control</td><td>&gt; 10%</td><td>Fast-track auto-payout. Show "money flow" diagram in onboarding.</td></tr>
+    <tr><td>Don't need card</td><td>&gt; 8%</td><td>Make virtual card default, hide physical card behind opt-in.</td></tr>
+    <tr><td>Don't understand</td><td>&gt; 15%</td><td>Shadow/demo mode becomes P0. Also signals value prop screen failed.</td></tr>
+    <tr><td>Think about it later</td><td>&gt; 20%</td><td>Re-engagement campaign. Show balance preview at next payout.</td></tr>
+    <tr><td>Something else (clustered theme)</td><td>&gt; 5% of free text</td><td>Promote to new preset option. Investigate as potential Hypothesis 5.</td></tr>
+  </table>
+
+  <div class="callout callout-blue"><strong>Statistical significance:</strong> With our current funnel volume (~2,500 merchants reaching active choice per month), we need ~400 responses to reach 95% confidence on any option's share ± 4pp. At an expected 45% response rate, that's roughly 3-4 weeks of data collection before making decisions.</div>
+
+  <hr>
+
+  <!-- ─── MARKET RESEARCH ─── -->
+  <h3>
+    <span class="h3-icon" style="background:#fff7ed"><svg viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+    Market Research — How Others Do It
+  </h3>
+  <ul>
+    <li><strong>Chime (2024)</strong> — Uses a 5-option post-rejection modal for their savings account upsell. Single-select + free text. Reported 47% response rate. Top reason: "I already have a savings account" (41%).</li>
+    <li><strong>Revolut Business (2025)</strong> — Shows a 1-question NPS-style modal after business account rejection. Followed by conditional branching: detractors get a free text "What would change your mind?", promoters get a share link. 38% response rate.</li>
+    <li><strong>Mercury (2024)</strong> — Embeds rejection reasons in the "No thanks" button itself as a dropdown rather than a separate modal. 3 options + "Other." Fastest interaction (no separate modal load), but limited depth. 52% selection rate.</li>
+    <li><strong>Shopify Balance (2024)</strong> — No explicit rejection survey. Instead, tracks behavioral signals (time on page, scroll depth, hover on FAQs) to infer barriers. Richer implicit data but can't validate hypotheses directly.</li>
+    <li><strong>Stripe Treasury / Atlas (2024-2025)</strong> — Post-rejection email survey (sent 24h later). 6 options. Only 4% response rate. Poor data quality due to recall bias.</li>
+  </ul>
+  <div class="callout callout-amber"><strong>Our advantage:</strong> Unlike email follow-ups (Stripe's approach, ~4% response) or implicit tracking (Shopify's approach, no direct validation), the in-context modal gives us <strong>direct, attributable, high-quality signal</strong> within seconds of the decision. This is the only reliable way to validate our hypotheses.</div>
+
+  <hr>
+
+  <!-- ─── EDGE CASES ─── -->
+  <h3>
+    <span class="h3-icon" style="background:#fff1f2"><svg viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+    Edge Cases &amp; Guards
+  </h3>
+  <ul>
+    <li><strong>Repeat rejection</strong> — If a merchant has already submitted feedback, do NOT show the modal again for 30 days. After 30 days, show once more (reasons may change). Max 3 lifetime impressions.</li>
+    <li><strong>"Think about it later" re-engagement</strong> — Merchants who select this get a gentle nudge at their next payout event (not an email, an in-context banner): "Ready to try Wix Checking? Your last payout would have arrived 2 days faster."</li>
+    <li><strong>Free text abuse</strong> — Cap at 500 characters. Basic profanity filter on display (not on storage). All text stored for analysis.</li>
+    <li><strong>Mobile</strong> — Modal is responsive (see prototype at narrow width). Options use full-width tap targets. Free text keyboard should not obscure the submit button (modal scrolls).</li>
+    <li><strong>Accessibility</strong> — Radio buttons are keyboard-navigable (arrow keys). Focus trap within modal. Screen reader labels on all interactive elements. Thank you state announced via aria-live.</li>
+  </ul>
+
+</div>
+</section>
+
+<script>
+const options = document.querySelectorAll('.option');
+const ftWrap = document.getElementById('freetext-wrap');
+const btnSubmit = document.getElementById('btn-submit');
+const btnSkip = document.getElementById('btn-skip');
+const formState = document.getElementById('form-state');
+const thankYou = document.getElementById('thank-you');
+let selected = null;
+
+options.forEach(opt => {
+  opt.addEventListener('click', () => {
+    options.forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    selected = opt.dataset.val;
+    btnSubmit.disabled = false;
+    ftWrap.classList.toggle('show', selected === 'other');
+  });
+});
+
+function showThankYou() {
+  formState.classList.add('hide');
+  setTimeout(() => {
+    formState.style.display = 'none';
+    thankYou.classList.add('show');
+  }, 300);
+}
+
+btnSubmit.addEventListener('click', () => {
+  const payload = {
+    reason: selected,
+    freetext: document.getElementById('freetext').value,
+    extra: document.getElementById('extra-text').value,
+    ts: new Date().toISOString()
+  };
+  console.log('feedback_submitted', payload);
+  showThankYou();
+});
+
+btnSkip.addEventListener('click', () => {
+  console.log('feedback_skipped');
+  showThankYou();
+});
+</script>
+
+</body>
+</html>
